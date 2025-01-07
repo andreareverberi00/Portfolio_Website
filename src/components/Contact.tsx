@@ -152,7 +152,7 @@ export default function Contact() {
                   animate={{ opacity: 1, y: 0 }}
                   className="text-red-400 text-center"
                 >
-                  Failed to send message. Please try again or contact me directly at andrea@mrmoon.com
+                  Failed to send message. Please try again later.
                 </motion.p>
               )}
             </form>
