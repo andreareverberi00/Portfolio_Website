@@ -29,22 +29,22 @@ export default function About() {
     {
       icon: <Gamepad2 className="w-8 h-8 text-violet-400" />,
       title: "Game Engines",
-      description: "Proficient in unreal engine and unity, with experience in renpy and ink for interactive storytelling and gameplay mechanics."
+      description: "Proficient in Unreal Engine and Unity, with experience in Renpy and Ink for interactive storytelling and gameplay mechanics."
     },
     {
       icon: <Code2 className="w-8 h-8 text-violet-400" />,
       title: "Development",
-      description: "skilled in web development with html, css, and javascript for creating responsive and dynamic web applications. Proficient in c# and blueprint scripting for game development, crafting interactive mechanics and systems in unity andunreal engine"
+      description: "Skilled in web development with HTML, CSS, and JavaScript for creating responsive and dynamic web applications. Proficient in C# and Blueprint scripting for game development, crafting interactive mechanics and systems in Unity and Unreal Engine."
     },
     {
       icon: <Layout className="w-8 h-8 text-violet-400" />,
       title: "Design Tools",
-      description: "Experienced in using figma for ideation, wireframing, and prototyping, enabling efficient visual design and user flow planning for both web and game interfaces"
+      description: "Experienced in using Figma for ideation, wireframing, and prototyping, enabling efficient visual design and user flow planning for both web and game interfaces."
     },
     {
       icon: <Briefcase className="w-8 h-8 text-violet-400" />,
       title: "Project Management",
-      description: "experienced with jira and trello, utilizing the agile scrum methodology to manage projects effectively, organize tasks, and facilitate team collaboration."
+      description: "Experienced with Jira and Trello, utilizing the Agile Scrum methodology to manage projects effectively, organize tasks, and facilitate team collaboration."
     }
   ];
 

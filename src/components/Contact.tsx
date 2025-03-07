@@ -72,35 +72,33 @@ export default function Contact() {
 
           <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 shadow-xl border border-gray-700">
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-                    Name *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    disabled={isSubmitting}
-                    className="w-full bg-gray-700/50 border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-violet-400 focus:border-transparent disabled:opacity-50"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    disabled={isSubmitting}
-                    className="w-full bg-gray-700/50 border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-violet-400 focus:border-transparent disabled:opacity-50"
-                  />
-                </div>
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                  Name *
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  disabled={isSubmitting}
+                  className="w-full bg-gray-700/50 border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-violet-400 focus:border-transparent disabled:opacity-50"
+                />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                  Email *
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  disabled={isSubmitting}
+                  className="w-full bg-gray-700/50 border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-violet-400 focus:border-transparent disabled:opacity-50"
+                />
               </div>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
