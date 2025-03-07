@@ -35,12 +35,12 @@ function App() {
           <LoadingScreen key="loading" />
         ) : (
           <div className="bg-gray-900 text-white">
-            <Navigation />
             <Routes>
               <Route
                 path="/"
                 element={
                   <>
+                    <Navigation />
                     <main>
                       <section id="home">
                         <Hero />
@@ -66,8 +66,8 @@ function App() {
                 }
               />
               <Route path="/project/:projectId" element={<ProjectDetails />} />
+              <Route path="/techtimeline" element={<TechTimeline />} />
               <Route path="/projects" element={<AllProjects />} />
-              <Route path="/techtimeline" element={<TechTimeline />} /> 
             </Routes>
           </div>
         )}
