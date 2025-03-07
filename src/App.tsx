@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import ProjectDetails from "./components/ProjectDetails";
 import emailjs from '@emailjs/browser';
 import TechTimeline from "./components/TechTimeline";
+import AllProjects from "./components/AllProjects";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -65,6 +66,7 @@ function App() {
                 }
               />
               <Route path="/project/:projectId" element={<ProjectDetails />} />
+              <Route path="/projects" element={<AllProjects />} />
               <Route path="/techtimeline" element={<TechTimeline />} /> 
             </Routes>
           </div>

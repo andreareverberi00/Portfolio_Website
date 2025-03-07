@@ -1,3 +1,270 @@
+// Filename: piper.sh
+output_file="./combined_for_llm.txt"
+# Clear or create the output file
+> "$output_file"
+git ls-files --cached --others --exclude-standard \
+  | grep -v -E '\.(jpg|png|heic|pdf|svg|webp|ico|lockb)$' \
+   | grep -v '^.\gitignore$' \
+  | grep -v '^extract_for_llm\.sh$' \
+  | grep -v '^combined_for_llm\.txt$' \
+  | while IFS= read -r file; do
+      if [[ -d "$file" ]]; then
+        continue
+      fi
+      echo "// Filename: $file" >> "$output_file"
+      cat "$file" >> "$output_file"
+      echo -e "\n" >> "$output_file"
+    done
+
+
+// Filename: src/components/AllProjects.tsx
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { getProjects } from "./utils/markdownLoader";
+import { ArrowLeft } from "lucide-react";
+
+export default function AllProjects() {
+  const navigate = useNavigate();
+  const projects = getProjects();
+
+  return (
+    <div className="min-h-screen py-20">
+      <div className="container mx-auto px-4">
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          onClick={() => navigate("/")}
+          className="text-violet-400 hover:text-violet-300 flex items-center gap-2 mb-8"
+        >
+          <ArrowLeft size={20} /> Back to Home
+        </motion.button>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-4xl font-bold text-center mb-12"
+        >
+          All Projects
+        </motion.h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projects.map((project, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0, transition: { delay: index * 0.1 } }}
+              onClick={() => navigate(`/project/${project.slug}`)}
+              className="relative group cursor-pointer rounded-lg overflow-hidden"
+            >
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-110"
+              />
+
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 flex flex-col justify-end">
+                <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
+                <p className="text-gray-300 line-clamp-3">
+                  {project.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+} 
+
+// Filename: src/components/utils/markdownLoader.ts
+import matter from 'gray-matter';
+
+export interface MarkdownProject {
+  slug: string;
+  title: string;
+  date: string;
+  description: string;
+  image: string;
+  tags: string[];
+  details: {
+    engine: string;
+    role: string;
+    duration: string;
+    responsibilities: string[];
+  };
+  content: string;
+}
+
+export function getProjects(): MarkdownProject[] {
+  const projectFiles = import.meta.glob('../../content/projects/*.md', { 
+    as: 'raw',
+    eager: true 
+  });
+  console.log('Glob results:', projectFiles);
+
+  
+  const projects: MarkdownProject[] = [];
+  
+  for (const path in projectFiles) {
+    const fileContent = projectFiles[path] as string;
+    const { data, content } = matter(fileContent);
+    
+    // Extract slug from filename
+    const slugMatch = path.match(/projects\/(.*?)\.md$/);
+    const slug = slugMatch ? slugMatch[1] : '';
+    
+    projects.push({
+      slug,
+      title: data.title || '',
+      date: data.date || '',
+      description: data.description || '',
+      image: data.image || '',
+      tags: data.tags || [],
+      details: {
+        engine: data.details?.engine || '',
+        role: data.details?.role || '',
+        duration: data.details?.duration || '',
+        responsibilities: data.details?.responsibilities || []
+      },
+      content
+    });
+  }
+  
+  // Sort by date (newest first)
+  return projects.sort((a, b) => 
+    new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+}
+
+export function getProjectBySlug(slug: string): MarkdownProject | undefined {
+  return getProjects().find(project => project.slug === slug);
+} 
+
+// Filename: src/content/projects/lost-balance.md
+---
+title: "Lost Balance"
+date: "2023-01-10"
+description: "A survival horror game that revolves around maintaining equilibrium on three emotional axes."
+image: "/Assets/LostBalance.png"
+tags: ["Unreal Engine", "Blueprint", "Narrative Design"]
+details:
+  engine: "Unreal Engine 5"
+  role: "Game Designer"
+  duration: "6 months"
+  responsibilities:
+    - "Story development"
+    - "Core gameplay mechanics and systems"
+    - "Gameplay testing and iteration"
+    - "Sound design"
+---
+
+# Lost Balance
+
+Lost Balance is a survival horror game that revolves around maintaining equilibrium on three emotional axes: anxiety/calm, fear/rashness, and depression/euphoria.
+
+## Core Mechanics
+
+Players navigate these axes in response to various environmental factors and objects, balancing their emotions to prevent hitting an extreme, which would lead to game over.
+
+## Narrative Design
+
+The game explores themes of mental health and emotional regulation through a horror lens, creating a unique gameplay experience where your emotional state directly impacts your survival. 
+
+// Filename: src/content/projects/turbo-trash.md
+---
+title: "Turbo Trash"
+date: "2023-06-15"
+description: "A mobile hyper-casual game aimed at teaching waste management with an eco-conscious twist."
+image: "/Assets/TurboTrash.png"
+tags: ["Unity", "C#"]
+details:
+  engine: "Unity"
+  role: "Game Designer"
+  duration: "6 months"
+  responsibilities:
+    - "Core gameplay mechanics and systems"
+    - "Level design and progression"
+    - "Player feedback systems"
+    - "Gameplay testing and iteration"
+    - "Sound design"
+---
+
+# Turbo Trash
+
+Turbo Trash is a mobile hyper-casual game aimed at teaching waste management with an eco-conscious twist. You play as a sorting robot using 'TecLev' levitation technology to grab and fling various objects into the correct bins: glass, paper, plastic, organic, and metals/e-waste.
+
+## Gameplay
+
+The game has a strict yet friendly boss (a voice on the speaker) encouraging you to do your best, rewarding accuracy, and penalizing mistakes by draining your energy. Objects roll down an increasingly fast conveyor belt, with overtime periods intensifying the pace.
+
+You can also unlock perks and different antennas to tweak gameplay and adapt to challenges. The ultimate goal? To become 'employee of the month' and beat high scores on the leaderboard.
+
+## Visual Style
+
+Visually, it's a mix of futuristic tech and cartoonish style, with a 'clean industrial' look, despite being set in a waste collection center. 
+
+// Filename: .env
+VITE_PUBLIC_EMAILJS_SERVICE_ID=service_ezwc81s
+VITE_PUBLIC_EMAILJS_TEMPLATE_ID=template_c3e180o
+VITE_PUBLIC_EMAILJS_PUBLIC_KEY=3pUW0YYEKEjqZF6Iz
+
+// Filename: eslint.config.js
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  { ignores: ['dist'] },
+  {
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+    },
+  }
+);
+
+
+// Filename: index.html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Andrea Reverberi - Game Designer Portfolio. Specializing in Unreal Engine and Unity development, creating immersive gaming experiences." />
+    <meta name="keywords" content="game design, game developer, Unity, Unreal Engine, portfolio, Andrea Reverberi" />
+    <meta property="og:title" content="Andrea Reverberi - Game Designer Portfolio" />
+    <meta property="og:description" content="Passionate Italian game designer crafting immersive experiences through innovative mechanics and compelling narratives." />
+    <meta property="og:image" content="/og-image.jpg" />
+    <meta name="theme-color" content="#4c0894" />
+    <title>Andrea Reverberi - Game Designer Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
+
+// Filename: package-lock.json
 {
   "name": "vite-react-typescript-starter",
   "version": "0.0.0",
@@ -7336,3 +7603,1962 @@
     }
   }
 }
+
+
+// Filename: package.json
+{
+  "name": "vite-react-typescript-starter",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "buffer": "^6.0.3",
+    "framer-motion": "^11.0.8",
+    "lucide-react": "^0.344.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^6.28.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.1",
+    "@tailwindcss/forms": "^0.5.9",
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "@types/node": "^20.11.24",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.18",
+    "concurrently": "^9.1.0",
+    "eslint": "^9.9.1",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.11",
+    "globals": "^15.9.0",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^8.3.0",
+    "vite": "^5.4.2",
+    "vite-plugin-node-polyfills": "^0.23.0"
+  }
+}
+
+
+// Filename: postcss.config.js
+export default {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+
+
+// Filename: src/App.tsx
+import React, { useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
+import LoadingScreen from "./components/LoadingScreen";
+import Hero from "./components/Hero";
+import About from "./components/About";
+import Projects from "./components/Projects";
+import Contact from "./components/Contact";
+import Navigation from "./components/Navigation";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import ProjectDetails from "./components/ProjectDetails";
+import emailjs from '@emailjs/browser';
+import TechTimeline from "./components/TechTimeline";
+import AllProjects from "./components/AllProjects";
+
+function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    emailjs.init(import.meta.env.VITE_PUBLIC_EMAILJS_PUBLIC_KEY);
+  }, []);
+
+  return (
+    <Router>
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <LoadingScreen key="loading" />
+        ) : (
+          <div className="bg-gray-900 text-white">
+            <Navigation />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <main>
+                      <section id="home">
+                        <Hero />
+                      </section>
+                      <section id="about">
+                        <About />
+                      </section>
+                      <section id="projects">
+                        <Projects />
+                      </section>
+                      <section id="contact">
+                        <Contact />
+                      </section>
+                      <section id="techdle-button" className="text-center my-4 justify-center flex">
+                        <Link to="/techtimeline">
+                          <button className="w-300 p-10 bg-violet-600 text-white font-semibold py-3 rounded-lg hover:bg-violet-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                            Techdle
+                          </button>
+                        </Link>
+                      </section>
+                    </main>
+                  </>
+                }
+              />
+              <Route path="/project/:projectId" element={<ProjectDetails />} />
+              <Route path="/projects" element={<AllProjects />} />
+              <Route path="/techtimeline" element={<TechTimeline />} /> 
+            </Routes>
+          </div>
+        )}
+      </AnimatePresence>
+    </Router>
+  );
+}
+
+export default App;
+
+// Filename: src/Assets/index.ts
+import TurboTrash from './TurboTrash.png';
+import LostBalance from './LostBalance.png';
+
+export { TurboTrash, LostBalance };
+
+
+// Filename: src/components/About.tsx
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Code2, Gamepad2, Layout, Briefcase, Instagram, Linkedin } from 'lucide-react';
+
+export default function About() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100
+      }
+    }
+  };
+
+  const skills = [
+    {
+      icon: <Gamepad2 className="w-8 h-8 text-violet-400" />,
+      title: "Game Engines",
+      description: "Proficient in unreal engine and unity, with experience in renpy and ink for interactive storytelling and gameplay mechanics."
+    },
+    {
+      icon: <Code2 className="w-8 h-8 text-violet-400" />,
+      title: "Development",
+      description: "skilled in web development with html, css, and javascript for creating responsive and dynamic web applications. Proficient in c# and blueprint scripting for game development, crafting interactive mechanics and systems in unity andunreal engine"
+    },
+    {
+      icon: <Layout className="w-8 h-8 text-violet-400" />,
+      title: "Design Tools",
+      description: "Experienced in using figma for ideation, wireframing, and prototyping, enabling efficient visual design and user flow planning for both web and game interfaces"
+    },
+    {
+      icon: <Briefcase className="w-8 h-8 text-violet-400" />,
+      title: "Project Management",
+      description: "experienced with jira and trello, utilizing the agile scrum methodology to manage projects effectively, organize tasks, and facilitate team collaboration."
+    }
+  ];
+
+  return (
+    <motion.div 
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={containerVariants}
+      className="min-h-screen flex items-center py-20"
+    >
+      <div className="container mx-auto px-4">
+        <motion.div
+          variants={itemVariants}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl font-bold mb-4">About Me</h2>
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            At 24 years old, I'm a passionate game designer from Italy with a unique blend of technical expertise 
+            and creative vision. My approach combines innovative gameplay mechanics with compelling narratives 
+            to create unforgettable gaming experiences.
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
+          {skills.map((skill, index) => (
+            <motion.div
+              key={skill.title}
+              variants={itemVariants}
+              whileHover={{ 
+                scale: 1.02,
+                transition: { type: "spring", stiffness: 300 }
+              }}
+              className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-lg hover:bg-gray-700/50 transition-colors border border-violet-900/50"
+            >
+              <div className="mb-4">
+                {skill.icon}
+              </div>
+              <h3 className="text-xl font-semibold mb-2">{skill.title}</h3>
+              <p className="text-gray-400">{skill.description}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div
+          variants={itemVariants}
+          className="bg-gray-800/30 backdrop-blur-sm p-8 rounded-lg border border-violet-900/30"
+        >
+          <h3 className="text-2xl font-bold mb-4">Location & Contact</h3>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div>
+              <h4 className="text-lg font-semibold mb-2 text-violet-400">Based in</h4>
+              <p className="text-gray-300">Italy</p>
+              <p className="text-gray-400 mt-2">Available for remote work and collaborations worldwide</p>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold mb-2 text-violet-400">Contact</h4>
+              <a 
+                href="https://www.instagram.com/andreareverberi_/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-gray-300 flex items-center gap-2 hover:text-violet-400 transition-colors"
+              >
+                <Instagram className="w-5 h-5" />
+                Instagram
+              </a> 
+              <a 
+                href="https://www.linkedin.com/in/andrea-reverberi-041a7b240/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-gray-300 flex items-center gap-2 mt-2 hover:text-violet-400 transition-colors"
+              >
+                <Linkedin className="w-5 h-5" />
+                LinkedIn
+              </a> 
+              <p className="text-gray-400 mt-2">Feel free to reach out for collaborations or opportunities</p>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}
+
+// Filename: src/components/Contact.tsx
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Mail, Loader2, Linkedin, Github, Instagram } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+
+interface FormData {
+  name: string;
+  email: string;
+  message: string;
+}
+
+export default function Contact() {
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const result = await emailjs.send(
+        import.meta.env.VITE_PUBLIC_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_PUBLIC_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+          to_name: 'Andrea',
+        },
+        import.meta.env.VITE_PUBLIC_EMAILJS_PUBLIC_KEY
+      );
+
+      console.log('Email sent successfully:', result);
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.id]: e.target.value
+    }));
+  };
+
+  return (
+    <div className="min-h-screen flex items-center py-20">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">Get in Touch</h2>
+            <p className="text-xl text-gray-400">
+              Interested in collaboration? Let's create something amazing together.
+            </p>
+          </div>
+
+          <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 shadow-xl border border-gray-700">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                    Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    disabled={isSubmitting}
+                    className="w-full bg-gray-700/50 border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-violet-400 focus:border-transparent disabled:opacity-50"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                    Email *
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    disabled={isSubmitting}
+                    className="w-full bg-gray-700/50 border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-violet-400 focus:border-transparent disabled:opacity-50"
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
+                  Message *
+                </label>
+                <textarea
+                  id="message"
+                  rows={4}
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  disabled={isSubmitting}
+                  className="w-full bg-gray-700/50 border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-violet-400 focus:border-transparent disabled:opacity-50"
+                ></textarea>
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                disabled={isSubmitting}
+                className="w-full bg-violet-600 text-white font-semibold py-3 rounded-lg hover:bg-violet-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Mail className="w-5 h-5" />
+                    Send Message
+                  </>
+                )}
+              </motion.button>
+
+              {submitStatus === 'success' && (
+                <motion.p 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-green-400 text-center"
+                >
+                  Message sent successfully! I'll get back to you soon.
+                </motion.p>
+              )}
+
+              {submitStatus === 'error' && (
+                <motion.p 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-red-400 text-center"
+                >
+                  Failed to send message. Please try again later.
+                </motion.p>
+              )}
+            </form>
+
+            <div className="mt-8 pt-8 border-t border-gray-700">
+              <div className="flex justify-center space-x-6">
+                <motion.a
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  href="https://instagram.com/andreareverberi_"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-violet-400 transition-colors"
+                >
+                  <Instagram size={24} />
+                </motion.a>
+                <motion.a
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  href="https://github.com/andreareverberi00"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-violet-400 transition-colors"
+                >
+                  <Github size={24} />
+                </motion.a>
+                <motion.a
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  href="https://linkedin.com/in/andrea-reverberi-041a7b240"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-violet-400 transition-colors"
+                >
+                  <Linkedin size={24} />
+                </motion.a>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+// Filename: src/components/Hero.tsx
+import { motion } from 'framer-motion';
+import { Gamepad2, ChevronDown } from 'lucide-react';
+
+export default function Hero() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100
+      }
+    }
+  };
+
+  return (
+    <motion.section 
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="min-h-screen relative flex items-center justify-center bg-gradient-to-br from-violet-950 via-gray-900 to-slate-900 overflow-hidden"
+    >
+      <div className="absolute inset-0 w-full h-full">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_500px_at_50%_50%,#3b0764,transparent)]" />
+        <motion.div
+          animate={{
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+          className="absolute inset-0 bg-[radial-gradient(circle_300px_at_80%_20%,#4c0894,transparent)]"
+        />
+      </div>
+      
+      <div className="container mx-auto px-4 z-10">
+        <motion.div
+          variants={containerVariants}
+          className="text-center"
+        >
+          <motion.div
+            variants={itemVariants}
+            whileHover={{ scale: 1.1 }}
+            className="inline-block mb-6"
+          >
+            <Gamepad2 size={64} className="text-violet-400" />
+          </motion.div>
+          
+          <motion.h1 
+            variants={itemVariants}
+            className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-purple-200"
+          >
+            Andrea Reverberi
+            <span className="block text-3xl md:text-4xl mt-4 text-violet-300">Game Designer</span>
+          </motion.h1>
+          
+          <motion.p 
+            variants={itemVariants}
+            className="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl mx-auto"
+          >
+            Italian game designer with a knack for creating immersive experiences through inventive mechanics and engaging narratives. specialized in unreal engine and unity, with a strong foundation in programming and game design documentation
+          </motion.p>
+          
+          <motion.div
+            variants={itemVariants}
+            className="flex justify-center gap-4"
+          >
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-3 rounded-full bg-violet-600 text-white font-semibold hover:bg-violet-700 transition-colors"
+              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              View My Work
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-3 rounded-full border-2 border-violet-600 text-violet-400 font-semibold hover:bg-violet-600/10 transition-colors"
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              Let's Connect
+            </motion.button>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      <motion.div 
+        animate={{ 
+          y: [0, 10, 0],
+          opacity: [0.5, 1, 0.5]
+        }}
+        transition={{ 
+          repeat: Infinity, 
+          duration: 2,
+          ease: "easeInOut"
+        }}
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer"
+        onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+      >
+        <ChevronDown size={32} className="text-violet-400" />
+      </motion.div>
+    </motion.section>
+  );
+}
+
+// Filename: src/components/LoadingScreen.tsx
+import { motion } from 'framer-motion';
+import { Gamepad2 } from 'lucide-react';
+
+export default function LoadingScreen() {
+  return (
+    <motion.div
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-gray-900 flex items-center justify-center z-50"
+    >
+      <motion.div
+        animate={{
+          scale: [1, 1.2, 1],
+          rotate: [0, 360],
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      >
+        <Gamepad2 size={64} className="text-violet-400" />
+      </motion.div>
+    </motion.div>
+  );
+} 
+
+// Filename: src/components/Navigation.tsx
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+
+export default function Navigation() {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className={`fixed w-full z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-gray-900/95 backdrop-blur-sm py-4' : 'bg-transparent py-6'
+      }`}
+    >
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => scrollToSection('home')}
+            className="text-xl font-bold text-violet-400"
+          >
+            GameDev
+          </motion.button>
+          
+          <div className="hidden md:flex space-x-8">
+            {['home', 'about', 'projects', 'contact'].map((item) => (
+              <motion.button
+                key={item}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => scrollToSection(item)}
+                className="text-gray-300 hover:text-violet-400 transition-colors capitalize"
+              >
+                {item}
+              </motion.button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.nav>
+  );
+}
+
+// Filename: src/components/ProjectDetails.tsx
+import { motion } from "framer-motion";
+import { ArrowLeft, PlayCircle } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getProjectBySlug } from "./utils/markdownLoader";
+import ReactMarkdown from "react-markdown";
+
+export default function ProjectDetails() {
+  const { projectId } = useParams();
+  const navigate = useNavigate();
+  const project = getProjectBySlug(projectId || "");
+
+  if (!project) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Project not found</h2>
+          <button
+            onClick={() => navigate("/")}
+            className="text-violet-400 hover:text-violet-300 flex items-center gap-2"
+          >
+            <ArrowLeft size={20} /> Back to Home
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen py-20">
+      <div className="container mx-auto px-4">
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          onClick={() => navigate("/")}
+          className="text-violet-400 hover:text-violet-300 flex items-center gap-2 mb-8"
+        >
+          <ArrowLeft size={20} /> Back to Projects
+        </motion.button>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-gray-800/30 backdrop-blur-sm rounded-lg overflow-hidden"
+        >
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-96 object-cover"
+          />
+
+          <div className="p-8">
+            <h1 className="text-4xl font-bold mb-4">{project.title}</h1>
+
+            <div className="flex flex-wrap gap-2 mb-6">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-sm bg-violet-600/30 text-violet-300 px-3 py-1 rounded-full"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            <div className="prose prose-invert max-w-none">
+              <ReactMarkdown>{project.content}</ReactMarkdown>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              <div>
+                <h2 className="text-2xl font-bold mb-4">Project Details</h2>
+                <div className="space-y-2">
+                  <p>
+                    <span className="text-violet-300">Engine:</span>{" "}
+                    {project.details.engine}
+                  </p>
+                  <p>
+                    <span className="text-violet-300">Role:</span>{" "}
+                    {project.details.role}
+                  </p>
+                  <p>
+                    <span className="text-violet-300">Duration:</span>{" "}
+                    {project.details.duration}
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <h2 className="text-2xl font-bold mb-4">Responsibilities</h2>
+                <ul className="list-disc list-inside text-gray-300">
+                  {project.details.responsibilities.map((resp, i) => (
+                    <li key={i}>{resp}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {project.title === "Turbo Trash" && (
+              <div className="flex gap-4 mt-8">
+                <motion.a
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  href="https://play.unity.com/en/games/d76a7f3f-b0ab-4ead-97ba-a5064f6c3b3e/turbo-trash"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-violet-400 hover:text-violet-300"
+                >
+                  <PlayCircle size={20} /> Play Demo
+                </motion.a>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+// Filename: src/components/Projects.tsx
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { getProjects } from "./utils/markdownLoader";
+
+export default function Projects() {
+  const navigate = useNavigate();
+  const projects = getProjects();
+  
+  // Limit to 6 projects for the homepage
+  const displayedProjects = projects.slice(0, 6);
+
+  return (
+    <div className="container mx-auto px-4 py-20" id="projects">
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        className="text-4xl font-bold text-center mb-12"
+      >
+        Projects
+      </motion.h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {displayedProjects.map((project, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            onClick={() => navigate(`/project/${project.slug}`)}
+            className="relative group cursor-pointer rounded-lg overflow-hidden"
+          >
+            <img
+              src={project.image}
+              alt={project.title}
+              className="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-110"
+            />
+
+            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 flex flex-col justify-end">
+              <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
+              <p className="text-gray-300 line-clamp-3">
+                {project.description}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+      
+      {projects.length > 6 && (
+        <div className="text-center mt-8">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/projects")}
+            className="px-8 py-3 rounded-full bg-violet-600 text-white font-semibold hover:bg-violet-700 transition-colors"
+          >
+            View All Projects
+          </motion.button>
+        </div>
+      )}
+    </div>
+  );
+} 
+
+// Filename: src/components/TechTimeline.tsx
+import React, { useState, useEffect } from 'react';
+import { Clock, ArrowUp, ArrowDown, RefreshCcw, Trophy } from 'lucide-react';
+
+interface TechEvent {
+    id: number;
+    event: string;
+    year: number;
+    description: string;
+    category: 'product' | 'company' | 'language' | 'web';
+}
+
+const techEvents: TechEvent[] = [
+    {
+        id: 1,
+        event: "First iPhone Release",
+        year: 2007,
+        description: "Apple revolutionizes the smartphone industry",
+        category: "product"
+    },
+    {
+        id: 2,
+        event: "Facebook Launch",
+        year: 2004,
+        description: "The social network that changed everything",
+        category: "company"
+    },
+    {
+        id: 3,
+        event: "JavaScript Creation",
+        year: 1995,
+        description: "Brendan Eich creates JavaScript in 10 days",
+        category: "language"
+    },
+    {
+        id: 4,
+        event: "World Wide Web Release",
+        year: 1991,
+        description: "Tim Berners-Lee releases the WWW to the public",
+        category: "web"
+    },
+    {
+        id: 5,
+        event: "Google Founded",
+        year: 1998,
+        description: "Larry Page and Sergey Brin found Google, the company that revolutionizes internet search",
+        category: "company"
+    },
+    {
+        id: 6,
+        event: "First Successful Test of ARPANET",
+        year: 1969,
+        description: "The precursor to the internet, ARPANET, successfully tests its first communication",
+        category: "web"
+    },
+    {
+        id: 7,
+        event: "Introduction of the First Apple Macintosh",
+        year: 1984,
+        description: "Apple introduces the Macintosh, revolutionizing personal computing with a graphical user interface",
+        category: "product"
+    },
+    {
+        id: 8,
+        event: "Release of Windows 95",
+        year: 1995,
+        description: "Microsoft releases Windows 95, a major advancement in desktop operating systems",
+        category: "product"
+    },
+    {
+        id: 9,
+        event: "Amazon Founded",
+        year: 1994,
+        description: "Jeff Bezos founds Amazon, which would become the largest online retailer in the world",
+        category: "company"
+    },
+    {
+        id: 10,
+        event: "Bitcoin Whitepaper Published",
+        year: 2008,
+        description: "The Bitcoin whitepaper is released by Satoshi Nakamoto, outlining the concept of digital currency",
+        category: "product"
+    },
+    {
+        id: 11,
+        event: "First Digital Camera",
+        year: 1975,
+        description: "Eastman Kodak engineer Steve Sasson creates the first digital camera",
+        category: "product"
+    },
+    {
+        id: 12,
+        event: "Launch of IBM PC",
+        year: 1981,
+        description: "IBM launches its first personal computer, marking a new era for personal computing",
+        category: "product"
+    },
+    {
+        id: 13,
+        event: "Sony PlayStation Released",
+        year: 1994,
+        description: "Sony releases the PlayStation, a game console that becomes a significant player in the gaming industry",
+        category: "product"
+    },
+    {
+        id: 14,
+        event: "First Use of the Term 'Virtual Reality'",
+        year: 1987,
+        description: "The term 'Virtual Reality' is first used, describing a fully immersive simulated environment",
+        category: "language"
+    },
+    {
+        id: 15,
+        event: "Intel Releases First Pentium Processor",
+        year: 1993,
+        description: "Intel releases the first Pentium processor, enhancing personal computer performance",
+        category: "product"
+    },
+    {
+        id: 16,
+        event: "First Smartphone (IBM Simon)",
+        year: 1992,
+        description: "The first smartphone, IBM Simon, is introduced, combining a mobile phone with a handheld computer",
+        category: "product"
+    },
+    {
+        id: 17,
+        event: "Launch of Netflix",
+        year: 1997,
+        description: "Netflix is founded, initially as a DVD rental service",
+        category: "company"
+    },
+    {
+        id: 18,
+        event: "Creation of Linux",
+        year: 1991,
+        description: "Linus Torvalds creates Linux, a free and open-source operating system",
+        category: "product"
+    },
+    {
+        id: 19,
+        event: "First Consumer LED",
+        year: 1962,
+        description: "The first practical Light Emitting Diode (LED) is developed, later widely used in displays and lighting",
+        category: "product"
+    },
+    {
+        id: 20,
+        event: "Launch of the Hubble Space Telescope",
+        year: 1990,
+        description: "The Hubble Space Telescope is launched, providing unprecedented images of space",
+        category: "product"
+    },
+    {
+        id: 21,
+        event: "Invention of the Microprocessor",
+        year: 1971,
+        description: "The first microprocessor, the Intel 4004, is released, paving the way for modern computing",
+        category: "product"
+    },
+    {
+        id: 22,
+        event: "Introduction of Bluetooth Technology",
+        year: 1994,
+        description: "Bluetooth technology is introduced, allowing for wireless communication between devices",
+        category: "product"
+    },
+    {
+        id: 23,
+        event: "Creation of the USB Standard",
+        year: 1996,
+        description: "The USB standard is introduced, simplifying the connection of peripheral devices to computers",
+        category: "product"
+    },
+    {
+        id: 24,
+        event: "Release of Mozilla Firefox Browser",
+        year: 2004,
+        description: "Mozilla releases the Firefox browser, enhancing web browsing with new features like tabbed browsing",
+        category: "product"
+    },
+    {
+        id: 25,
+        event: "Launch of the World Wide Web",
+        year: 1991,
+        description: "Tim Berners-Lee launches the first website, marking the public availability of the World Wide Web",
+        category: "web"
+    },
+    {
+        id: 26,
+        event: "Introduction of Wi-Fi",
+        year: 1997,
+        description: "Wi-Fi technology is introduced, allowing wireless networking between devices",
+        category: "product"
+    },
+    {
+        id: 27,
+        event: "First Commercial MP3 Player",
+        year: 1998,
+        description: "The MPMan, the first commercial MP3 player, is released in Asia",
+        category: "product"
+    },
+    {
+        id: 28,
+        event: "Release of Google Search Engine",
+        year: 1997,
+        description: "Google releases its revolutionary search engine to the public",
+        category: "product"
+    },
+    {
+        id: 29,
+        event: "First BlackBerry Phone",
+        year: 1999,
+        description: "Research In Motion releases the first BlackBerry phone, offering email on the go",
+        category: "product"
+    },
+    {
+        id: 30,
+        event: "Introduction of the iPod",
+        year: 2001,
+        description: "Apple introduces the iPod, revolutionizing the way people listen to music",
+        category: "product"
+    },
+    {
+        id: 31,
+        event: "Skype Launch",
+        year: 2003,
+        description: "Skype is launched, offering free voice and video calls over the internet",
+        category: "product"
+    },
+    {
+        id: 32,
+        event: "YouTube Goes Live",
+        year: 2005,
+        description: "The video sharing platform YouTube is launched, changing media consumption forever",
+        category: "web"
+    },
+    {
+        id: 33,
+        event: "Introduction of the Tesla Roadster",
+        year: 2008,
+        description: "Tesla Motors releases the Roadster, its first electric car, promoting the adoption of electric vehicles",
+        category: "product"
+    },
+    {
+        id: 34,
+        event: "Launch of WhatsApp",
+        year: 2009,
+        description: "WhatsApp is launched, quickly becoming the world's most popular messaging app",
+        category: "product"
+    },
+    {
+        id: 35,
+        event: "First iPad Released",
+        year: 2010,
+        description: "Apple releases the first iPad, popularizing tablet computing",
+        category: "product"
+    },
+    {
+        id: 36,
+        event: "Release of Microsoft Azure",
+        year: 2010,
+        description: "Microsoft launches Azure, its cloud computing service",
+        category: "product"
+    },
+    {
+        id: 37,
+        event: "Snapchat Introduction",
+        year: 2011,
+        description: "Snapchat is launched, introducing the concept of self-destructing messages",
+        category: "product"
+    },
+    {
+        id: 38,
+        event: "First 3D Printed Car",
+        year: 2014,
+        description: "The first 3D printed car, Strati, is printed and driven in Chicago during a trade show",
+        category: "product"
+    },
+    {
+        id: 39,
+        event: "Release of Apple Watch",
+        year: 2015,
+        description: "Apple releases the Apple Watch, popularizing wearable technology",
+        category: "product"
+    },
+    {
+        id: 40,
+        event: "First Reusable Rocket by SpaceX",
+        year: 2015,
+        description: "SpaceX successfully lands its Falcon 9 rocket after a launch, marking a significant step towards reusable rockets",
+        category: "product"
+    },
+    {
+        id: 41,
+        event: "Introduction of USB-C",
+        year: 2014,
+        description: "USB-C is introduced, offering a reversible plug connector and faster data and power transfer",
+        category: "product"
+    },
+    {
+        id: 42,
+        event: "First AI Go Victory",
+        year: 2016,
+        description: "Google's AlphaGo defeats world champion Lee Sedol in the game of Go, a milestone in artificial intelligence",
+        category: "product"
+    },
+    {
+        id: 43,
+        event: "Release of Pokémon GO",
+        year: 2016,
+        description: "Pokémon GO is released, becoming one of the most used and profitable mobile apps in 2016",
+        category: "product"
+    },
+    {
+        id: 44,
+        event: "Launch of Amazon Alexa",
+        year: 2014,
+        description: "Amazon launches Alexa, its voice-controlled personal assistant",
+        category: "product"
+    },
+    {
+        id: 45,
+        event: "First Flight of the Falcon Heavy",
+        year: 2018,
+        description: "SpaceX's Falcon Heavy, the most powerful operational rocket in the world by a factor of two, makes its first flight",
+        category: "product"
+    },
+    {
+        id: 46,
+        event: "Introduction of Ray Tracing in Gaming",
+        year: 2018,
+        description: "NVIDIA introduces real-time ray tracing in their RTX series graphics cards, enhancing gaming graphics",
+        category: "product"
+    },
+    {
+        id: 47,
+        event: "Launch of the Apple M1 Chip",
+        year: 2020,
+        description: "Apple introduces the M1 chip, its first ARM-based processor for Macs, claiming significant performance and power efficiency improvements",
+        category: "product"
+    },
+    {
+        id: 48,
+        event: "Introduction of 5G",
+        year: 2019,
+        description: "The rollout of 5G begins, offering significantly faster internet speeds and new technologies",
+        category: "product"
+    },
+    {
+        id: 49,
+        event: "Launch of the PlayStation 5",
+        year: 2020,
+        description: "Sony launches the PlayStation 5, which quickly becomes a bestseller despite global stock shortages",
+        category: "product"
+    },
+    {
+        id: 50,
+        event: "Introduction of CRISPR Gene Editing",
+        year: 2012,
+        description: "CRISPR, a revolutionary gene editing technology, is introduced, promising a new era of genetic manipulation",
+        category: "product"
+    },
+    {
+        id: 51,
+        event: "First Image of a Black Hole",
+        year: 2019,
+        description: "The first ever image of a black hole is captured by the Event Horizon Telescope, confirming aspects of general relativity",
+        category: "product"
+    },
+    {
+        id: 52,
+        event: "Launch of the James Webb Space Telescope",
+        year: 2021,
+        description: "NASA launches the James Webb Space Telescope, set to be the premier observatory of the next decade",
+        category: "product"
+    },
+    {
+        id: 53,
+        event: "Introduction of Neuralink",
+        year: 2016,
+        description: "Elon Musk founds Neuralink, a company aimed at developing implantable brain–machine interfaces",
+        category: "product"
+    },
+    {
+        id: 54,
+        event: "First Autonomous Uber Ride",
+        year: 2016,
+        description: "Uber launches its first self-driving car service to the public in Pittsburgh",
+        category: "product"
+    },
+    {
+        id: 55,
+        event: "Launch of Oculus Rift",
+        year: 2016,
+        description: "Oculus VR releases the Oculus Rift, a virtual reality headset that pioneers mainstream VR technologies",
+        category: "product"
+    },
+    {
+        id: 56,
+        event: "Introduction of Ethereum",
+        year: 2015,
+        description: "Ethereum is launched, introducing smart contracts and expanding the capabilities of blockchain technologies",
+        category: "product"
+    },
+    {
+        id: 57,
+        event: "First Quantum Computer Sold",
+        year: 2011,
+        description: "D-Wave Systems sells its first commercially available quantum computer, the D-Wave One",
+        category: "product"
+    },
+    {
+        id: 58,
+        event: "Introduction of the Hyperloop Concept",
+        year: 2013,
+        description: "Elon Musk publishes a whitepaper detailing the Hyperloop, a high-speed transportation system",
+        category: "product"
+    },
+    {
+        id: 59,
+        event: "Launch of Raspberry Pi",
+        year: 2012,
+        description: "The first Raspberry Pi is launched, providing an affordable, credit card-sized computer aimed at promoting the teaching of basic computer science",
+        category: "product"
+    },
+    {
+        id: 60,
+        event: "First Test Flight of Blue Origin’s New Shepard",
+        year: 2015,
+        description: "Blue Origin’s New Shepard space vehicle successfully completes its first test flight, marking progress in commercial space travel",
+        category: "product"
+    },
+    {
+        id: 61,
+        event: "Introduction of the Chromebook",
+        year: 2011,
+        description: "Google and Acer launch the first Chromebook, a new type of computer that runs Chrome OS",
+        category: "product"
+    },
+    {
+        id: 62,
+        event: "Launch of the Large Hadron Collider",
+        year: 2008,
+        description: "The Large Hadron Collider, the world’s largest and most powerful particle collider, is officially inaugurated",
+        category: "product"
+    },
+    {
+        id: 63,
+        event: "Discovery of the Higgs Boson Particle",
+        year: 2012,
+        description: "Scientists at CERN discover the Higgs boson, often referred to as the 'God particle,' using the Large Hadron Collider",
+        category: "product"
+    },
+    {
+        id: 64,
+        event: "Introduction of the Apple M2 Chip",
+        year: 2022,
+        description: "Apple introduces the M2 chip, continuing the transition to its own silicon with improved performance and efficiency",
+        category: "product"
+    },
+    {
+        id: 65,
+        event: "Launch of Starlink Internet Service",
+        year: 2020,
+        description: "SpaceX launches the Starlink Internet service, aiming to provide global broadband coverage",
+        category: "product"
+    },
+    {
+        id: 66,
+        event: "First Flight of Boeing 787 Dreamliner",
+        year: 2009,
+        description: "The Boeing 787 Dreamliner, a highly fuel-efficient aircraft, makes its first flight",
+        category: "product"
+    },
+    {
+        id: 67,
+        event: "Launch of the International Space Station",
+        year: 1998,
+        description: "The first modules of the International Space Station are launched into space",
+        category: "product"
+    },
+    {
+        id: 68,
+        event: "Introduction of Google Glass",
+        year: 2013,
+        description: "Google introduces Google Glass, a wearable technology with an optical head-mounted display",
+        category: "product"
+    },
+    {
+        id: 69,
+        event: "Launch of the Curiosity Rover",
+        year: 2012,
+        description: "NASA’s Curiosity rover lands on Mars, beginning its mission to explore the Martian surface",
+        category: "product"
+    },
+    {
+        id: 70,
+        event: "Introduction of the First 4K Television",
+        year: 2012,
+        description: "The first 4K television is released, offering a resolution four times that of HD",
+        category: "product"
+    },
+    {
+        id: 71,
+        event: "Launch of GitHub",
+        year: 2008,
+        description: "GitHub is launched, providing a platform for software developers to host and review code, manage projects, and build software alongside millions of developers",
+        category: "product"
+    },
+    {
+        id: 72,
+        event: "First Transatlantic Fiber Optic Cable",
+        year: 1988,
+        description: "The first transatlantic fiber optic cable, TAT-8, is laid, significantly increasing telecommunications capacity between Europe and North America",
+        category: "product"
+    },
+    {
+        id: 73,
+        event: "Launch of the Roomba",
+        year: 2002,
+        description: "iRobot releases the Roomba, an autonomous robotic vacuum cleaner",
+        category: "product"
+    },
+    {
+        id: 74,
+        event: "First Commercial Drone Delivery",
+        year: 2016,
+        description: "The first commercial drone delivery is completed by Flirtey, delivering medical supplies in the US",
+        category: "product"
+    },
+    {
+        id: 75,
+        event: "Introduction of HDR in Televisions",
+        year: 2015,
+        description: "High Dynamic Range (HDR) is introduced in televisions, improving the quality of video with more colors and better contrast",
+        category: "product"
+    },
+    {
+        id: 76,
+        event: "Launch of the first electric self-driving truck",
+        year: 2019,
+        description: "The first electric self-driving truck is launched by Volvo, marking a significant development in autonomous and electric transportation technologies",
+        category: "product"
+    },
+    {
+        id: 77,
+        event: "First Demonstration of Li-Fi",
+        year: 2011,
+        description: "Li-Fi, a method of wireless communication using light, is demonstrated for the first time, promising much higher speeds than Wi-Fi",
+        category: "product"
+    },
+    {
+        id: 78,
+        event: "Introduction of the Oculus Quest",
+        year: 2019,
+        description: "Oculus introduces the Oculus Quest, a standalone virtual reality headset that does not require a PC to operate",
+        category: "product"
+    },
+    {
+        id: 79,
+        event: "First Successful Gene Editing in Humans",
+        year: 2017,
+        description: "The first successful gene editing in humans is performed using CRISPR technology, opening new possibilities for medical treatments",
+        category: "product"
+    },
+    {
+        id: 80,
+        event: "Launch of the First Smart Thermostat",
+        year: 2011,
+        description: "The first smart thermostat, Nest Learning Thermostat, is introduced, allowing users to control their home temperature remotely",
+        category: "product"
+    },
+    {
+        id: 81,
+        event: "First Test of the Hyperloop",
+        year: 2017,
+        description: "The first full-scale test of the Hyperloop is conducted, demonstrating the potential of this new mode of transportation",
+        category: "product"
+    },
+    {
+        id: 82,
+        event: "Launch of Google Stadia",
+        year: 2019,
+        description: "Google launches Stadia, a cloud gaming service that allows streaming video games without the need for a console",
+        category: "product"
+    },
+    {
+        id: 83,
+        event: "Introduction of the Apple Silicon M1 Pro and M1 Max",
+        year: 2021,
+        description: "Apple introduces the M1 Pro and M1 Max, further advancing its own silicon with more power and efficiency for professional users",
+        category: "product"
+    },
+    {
+        id: 84,
+        event: "First Flight of the SpaceX Crew Dragon",
+        year: 2020,
+        description: "SpaceX's Crew Dragon successfully completes its first manned flight, marking a new era of commercial spaceflight",
+        category: "product"
+    },
+    {
+        id: 85,
+        event: "Launch of Google Photos",
+        year: 2015,
+        description: "Google launches Google Photos, offering free, unlimited photo and video storage",
+        category: "product"
+    },
+    {
+        id: 86,
+        event: "First Flight of an Electric Aircraft",
+        year: 2016,
+        description: "The first flight of a fully electric aircraft takes place, marking a significant step towards sustainable aviation",
+        category: "product"
+    },
+    {
+        id: 87,
+        event: "Introduction of Augmented Reality in Mobile Devices",
+        year: 2017,
+        description: "Augmented reality is introduced in mobile devices with significant capabilities, enhancing real-world experiences through digital information",
+        category: "product"
+    },
+    {
+        id: 88,
+        event: "Launch of Amazon Echo",
+        year: 2014,
+        description: "Amazon introduces the Echo, a smart speaker that integrates the voice-controlled assistant Alexa",
+        category: "product"
+    },
+    {
+        id: 89,
+        event: "First Commercial Use of 3D Printing in Medicine",
+        year: 2013,
+        description: "The first commercial use of 3D printing in medicine occurs, creating customized prosthetics for patients",
+        category: "product"
+    },
+    {
+        id: 90,
+        event: "Launch of the Mars Rover Perseverance",
+        year: 2020,
+        description: "NASA launches the Mars Rover Perseverance, aimed at exploring the Martian surface and seeking signs of past life",
+        category: "product"
+    },
+    {
+        id: 91,
+        event: "Introduction of 8K Television",
+        year: 2018,
+        description: "The first 8K television is introduced, offering resolutions four times that of 4K",
+        category: "product"
+    },
+    {
+        id: 92,
+        event: "First Successful Test of a Solar Sail in Space",
+        year: 2010,
+        description: "The first successful test of a solar sail in space is conducted by Japan's IKAROS spacecraft, demonstrating a novel method of propulsion",
+        category: "product"
+    },
+    {
+        id: 93,
+        event: "Introduction of Google Assistant",
+        year: 2016,
+        description: "Google introduces Google Assistant, a virtual assistant powered by artificial intelligence and machine learning",
+        category: "product"
+    },
+    {
+        id: 94,
+        event: "First Public Demonstration of a Flying Car",
+        year: 2017,
+        description: "The first public demonstration of a flying car takes place, showcasing a vehicle that can convert between driving and flying modes",
+        category: "product"
+    },
+    {
+        id: 95,
+        event: "Launch of the First Foldable Smartphone",
+        year: 2019,
+        description: "The first foldable smartphone is launched, featuring a flexible display that can be folded in half",
+        category: "product"
+    },
+    {
+        id: 96,
+        event: "Introduction of LiDAR in Consumer Smartphones",
+        year: 2020,
+        description: "LiDAR technology is introduced in consumer smartphones, enhancing augmented reality experiences and improving camera autofocus",
+        category: "product"
+    },
+    {
+        id: 97,
+        event: "First Commercial Deployment of Robotic Surgery",
+        year: 2000,
+        description: "The first commercial deployment of robotic surgery takes place, enhancing precision in surgical procedures",
+        category: "product"
+    },
+    {
+        id: 98,
+        event: "Launch of Apple Pay",
+        year: 2014,
+        description: "Apple launches Apple Pay, a mobile payment and digital wallet service that transforms mobile payments with an easy, secure, and private way to pay",
+        category: "product"
+    },
+    {
+        id: 99,
+        event: "First Test of Autonomous Trucks on Public Roads",
+        year: 2016,
+        description: "The first test of autonomous trucks on public roads is conducted, signaling a shift towards automation in logistics",
+        category: "product"
+    },
+    {
+        id: 100,
+        event: "Introduction of Artificial Intelligence in Public Security Cameras",
+        year: 2018,
+        description: "Artificial intelligence is introduced in public security cameras, enhancing public safety with real-time, automated threat detection",
+        category: "product"
+    }
+];
+
+const TechTimeline: React.FC = () => {
+    const [currentEvent, setCurrentEvent] = useState<TechEvent | null>(null);
+    const [guess, setGuess] = useState<number>(new Date().getFullYear());
+    const [pastGuesses, setPastGuesses] = useState<{ year: number; feedback: string }[]>([]);
+    const [attempts, setAttempts] = useState<number>(0);
+    const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
+    const [feedback, setFeedback] = useState<string | null>(null);
+    const MAX_ATTEMPTS = 5;
+
+    useEffect(() => {
+        resetGame();
+    }, []);
+
+    const checkGuess = () => {
+        if (!currentEvent || gameStatus !== 'playing') return;
+
+        const guessYear = guess;
+        const newAttempts = attempts + 1;
+        setAttempts(newAttempts);
+        const distance = Math.abs(guessYear - currentEvent.year);
+        const hint = distance > 10 ? '❄️' : distance > 3 ? '🌡️' : '🔥';
+
+        let feedbackMessage = guessYear < currentEvent.year ? `⬆️ (${hint})` : `⬇️ (${hint})`;
+        if (guessYear === currentEvent.year) {
+            feedbackMessage = '🎯 Correct!';
+            setGameStatus('won');
+        } else if (newAttempts >= MAX_ATTEMPTS) {
+            setGameStatus('lost');
+        }
+
+        setFeedback(feedbackMessage);
+        setPastGuesses([{ year: guessYear, feedback: feedbackMessage }, ...pastGuesses]);
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        checkGuess();
+    };
+
+    const resetGame = () => {
+        const randomEvent = techEvents[Math.floor(Math.random() * techEvents.length)];
+        setCurrentEvent(randomEvent);
+        setGuess(new Date().getFullYear());
+        setAttempts(0);
+        setPastGuesses([]);
+        setGameStatus('playing');
+        setFeedback(null);
+    };
+
+    return (
+        <div className="min-h-screen flex items-center py-20">
+            <div className="container mx-auto px-4">
+                <div className="max-w-4xl mx-auto">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl font-bold mb-4">TechTimeline</h2>
+                        <p className="text-xl text-gray-400">
+                            Guess the year of important tech events. You have {MAX_ATTEMPTS} attempts!
+                        </p>
+                    </div>
+
+                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 shadow-xl border border-gray-700">
+                        {currentEvent && (
+                            <div className="space-y-6">
+                                <div className="text-center">
+                                    <span className="inline-block bg-violet-600/20 text-violet-400 px-3 py-1 rounded-full text-sm">
+                                        {currentEvent.category.toUpperCase()}
+                                    </span>
+                                    <h3 className="text-2xl font-bold mt-4 mb-2">{currentEvent.event}</h3>
+                                    <p className="text-gray-400">{currentEvent.description}</p>
+                                </div>
+
+                                {gameStatus === 'playing' && (
+                                    <form onSubmit={handleSubmit} className="space-y-4">
+                                        <div>
+                                            <label htmlFor="year" className="block text-sm font-medium text-gray-300 mb-2">
+                                                Slide to the year:
+                                            </label>
+                                            <input
+                                                type="range"
+                                                id="year"
+                                                min="1900"
+                                                max={new Date().getFullYear()}
+                                                value={guess}
+                                                onChange={(e) => setGuess(parseInt(e.target.value))}
+                                                className="w-full"
+                                            />
+                                            <div className="text-center text-white">{guess}</div>
+                                        </div>
+
+                                        <button
+                                            type="submit"
+                                            className="w-full bg-violet-600 text-white font-semibold py-3 rounded-lg hover:bg-violet-700 transition-colors flex items-center justify-center gap-2"
+                                        >
+                                            <Clock className="w-5 h-5" />
+                                            Submit Guess
+                                        </button>
+                                    </form>
+                                )}
+
+                                {feedback && gameStatus === 'playing' && (
+                                    <div className="flex items-center justify-center gap-2 text-lg text-blue-400">
+                                        {feedback}
+                                    </div>
+                                )}
+
+                                {gameStatus !== 'playing' && (
+                                    <div className="text-center space-y-4">
+                                        {gameStatus === 'won' ? (
+                                            <div className="text-green-400">
+                                                <Trophy className="inline w-6 h-6 mr-2" />
+                                                Congratulations! You got it in {attempts} attempts!
+                                            </div>
+                                        ) : (
+                                            <div className="text-red-400">
+                                                Game Over! The correct year was {currentEvent.year}.
+                                            </div>
+                                        )}
+
+                                        <button
+                                            onClick={resetGame}
+                                            className="bg-gray-700 text-white font-semibold px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors flex items-center gap-2 mx-auto"
+                                        >
+                                            <RefreshCcw className="w-4 h-4" />
+                                            Play Again
+                                        </button>
+                                    </div>
+                                )}
+
+                                <div className="text-center text-gray-400">
+                                    Attempts: {attempts}/{MAX_ATTEMPTS}
+                                </div>
+                                <div className="mt-4">
+                                    <h4 className="text-white mb-2">Past Guesses:</h4>
+                                    <div className="flex flex-col-reverse">
+                                        {pastGuesses.map((g, index) => (
+                                            <div key={index} className="text-white">
+                                                {g.year}: {g.feedback}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default TechTimeline;
+
+
+// Filename: src/data/projects.ts
+import { TurboTrash, LostBalance } from "../Assets";
+
+export const projects = [
+    {
+        title: "Turbo Trash",
+      description: "turbo trash is a mobile hyper-casual game aimed at teaching waste management with an eco-conscious twist. you play as a sorting robot using 'TecLev' levitation technology to grab and fling various objects into the correct bins: glass, paper, plastic, organic, and metals/e-waste. the game has a strict yet friendly boss (a voice on the speaker) encouraging you to do your best, rewarding accuracy, and penalizing mistakes by draining your energy. objects roll down an increasingly fast conveyor belt, with overtime periods intensifying the pace. you can also unlock perks and different antennas to tweak gameplay and adapt to challenges. the ultimate goal? to become 'employee of the month' and beat high scores on the leaderboard. visually, it’s a mix of futuristic tech and cartoonish style, with a 'clean industrial' look, despite being set in a waste collection center.",
+        image: TurboTrash,
+      tags: ["Unity", "C#"],
+      details: {
+        engine: "Unity",
+        role: "Game Designer",
+        duration: "6 months",
+        responsibilities: [
+          "Core gameplay mechanics and systems",
+          "Level design and progression",
+          "Player feedback systems",
+          "Gameplay testing and iteration",
+          "Sound design"
+        ]
+      }
+    },
+    {
+    title: "Lost Balance",
+    description: "Lost Balance is a survival horror game that revolves around maintaining equilibrium on three emotional axes: anxiety/calm, fear/rashness, and depression/euphoria. players navigate these axes in response to various environmental factors and objects, balancing their emotions to prevent hitting an extreme, which would lead to game over.",
+    image: LostBalance,
+    tags: ["Unreal Engine", "Blueprint", "Narrative Design"],
+    details: {
+      engine: "Unreal Engine 5",
+      role: "Game Designer",
+      duration: "6 months",
+      responsibilities: [
+        "Story development",
+        "Core gameplay mechanics and systems",
+        "Gameplay testing and iteration",
+        "Sound design"
+      ]
+    }
+  }
+]; 
+
+// Filename: src/index.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-gray-900;
+}
+
+::selection {
+  @apply bg-violet-500/30 text-violet-200;
+}
+
+.prose {
+  @apply max-w-none;
+}
+
+.prose p {
+  @apply mb-4;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-violet-900 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-violet-800;
+}
+
+// Filename: src/main.tsx
+import { Buffer } from 'buffer';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App.tsx';
+import './index.css';
+
+// Polyfill Buffer for the browser environment
+window.Buffer = window.Buffer || Buffer;
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+);
+
+
+// Filename: src/vite-env.d.ts
+/// <reference types="vite/client" />
+
+
+// Filename: tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+      },
+      animation: {
+        'gradient': 'gradient 8s linear infinite',
+        'float': 'float 6s ease-in-out infinite',
+      },
+      keyframes: {
+        gradient: {
+          '0%, 100%': {
+            'background-size': '200% 200%',
+            'background-position': 'left center'
+          },
+          '50%': {
+            'background-size': '200% 200%',
+            'background-position': 'right center'
+          },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
+        },
+      },
+    },
+  },
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/line-clamp'),
+  ],
+};
+
+
+// Filename: tsconfig.app.json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"]
+}
+
+
+// Filename: tsconfig.json
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
+
+
+// Filename: tsconfig.node.json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["vite.config.ts"]
+}
+
+
+// Filename: vite.config.ts
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [
+    react(),
+    nodePolyfills()
+  ]
+});
+
+

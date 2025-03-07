@@ -1,15 +1,13 @@
 import { motion } from "framer-motion";
 import { ArrowLeft, PlayCircle } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import { projects } from "../data/projects";
+import { getProjectBySlug } from "./utils/markdownLoader";
+import ReactMarkdown from "react-markdown";
 
 export default function ProjectDetails() {
   const { projectId } = useParams();
   const navigate = useNavigate();
-
-  const project = projects.find(
-    (p) => p.title.toLowerCase().replace(/\s+/g, "-") === projectId
-  );
+  const project = getProjectBySlug(projectId || "");
 
   if (!project) {
     return (
@@ -64,8 +62,8 @@ export default function ProjectDetails() {
               ))}
             </div>
 
-            <div className="prose prose-invert max-w-none mb-8">
-              <p className="text-xl text-gray-300">{project.description}</p>
+            <div className="prose prose-invert max-w-none">
+              <ReactMarkdown>{project.content}</ReactMarkdown>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 mb-8">
@@ -98,7 +96,7 @@ export default function ProjectDetails() {
             </div>
 
             {project.title === "Turbo Trash" && (
-              <div className="flex gap-4">
+              <div className="flex gap-4 mt-8">
                 <motion.a
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
