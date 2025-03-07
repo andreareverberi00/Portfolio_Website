@@ -121,10 +121,6 @@ More details about the project, broken into logical sections.
 Additional information about features, design choices, or technical challenges.
 ```
 
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ---
 
 Designed and developed with ❤️
