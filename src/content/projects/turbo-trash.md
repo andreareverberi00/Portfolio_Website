@@ -2,7 +2,7 @@
 title: "Turbo Trash"
 date: "2024-06-15"
 description: "A mobile hyper-casual game aimed at teaching waste management with an eco-conscious twist."
-image: "/Assets/TurboTrash.png"
+image: "/Assets/TurboTrash/TurboTrash.png"
 tags: ["Unity", "C#"]
 details:
   engine: "Unity"
