@@ -2,7 +2,7 @@
 title: "The Lawyer"
 date: "2024-10-15"
 description: "An atmospheric horror puzzle game set in a vintage lawyer's office, where the only way out is through the darkest truths."
-image: "/Assets/TheLawyer/TheLawyer.png"
+image: "/Assets/TheLawyer.png"
 tags: ["Unreal Engine", "Blueprint", "Horror", "Puzzle"]
 details:
   engine: "Unreal Engine 5"

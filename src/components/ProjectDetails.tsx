@@ -3,6 +3,7 @@ import { ArrowLeft, PlayCircle } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProjectBySlug } from "./utils/markdownLoader";
 import ReactMarkdown from "react-markdown";
+import ProjectGallery from "./ProjectGallery";
 
 export default function ProjectDetails() {
   const { projectId } = useParams();
@@ -109,6 +110,8 @@ export default function ProjectDetails() {
                 </motion.a>
               </div>
             )}
+
+            <ProjectGallery projectName={project.title.replace(/\s+/g, '')} />
           </div>
         </motion.div>
       </div>
