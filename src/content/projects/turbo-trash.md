@@ -1,6 +1,6 @@
 ---
 title: "Turbo Trash"
-date: "2023-06-15"
+date: "2024-06-15"
 description: "A mobile hyper-casual game aimed at teaching waste management with an eco-conscious twist."
 image: "/Assets/TurboTrash.png"
 tags: ["Unity", "C#"]

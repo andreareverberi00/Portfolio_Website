@@ -1,6 +1,6 @@
 ---
 title: "Lost Balance"
-date: "2023-01-10"
+date: "2024-09-15"
 description: "A survival horror game that revolves around maintaining equilibrium on three emotional axes."
 image: "/Assets/LostBalance.png"
 tags: ["Unreal Engine", "Blueprint", ]

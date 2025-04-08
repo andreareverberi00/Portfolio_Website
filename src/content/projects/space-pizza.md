@@ -1,6 +1,6 @@
 ---
 title: "Space Pizza"
-date: "2023-10-01"
+date: "2025-02-20"
 description: "A pixel art game set in a cyberpunk universe where players take on the role of an astronaut working at a space diner, delivering pizzas to unique alien customers."
 image: "/Assets/space-pizza.png"
 tags: ["Unity", "C#", "Pixel Art", "Game Design"]
@@ -19,7 +19,7 @@ details:
 
 ## Overview
 
-Space Pizza is a pixel art time management game set in a vibrant cyberpunk world. Players assume the role of an astronaut who, after a space accident, finds himself stranded on a distant planet. To earn the money needed to repair his spaceship, he takes a job at a bustling space diner, preparing and delivering pizzas to quirky alien customers.
+Space Pizza is a pixel art time management game set in a vibrant cyberpunk world made for the Pizza Game Jam started in 2025/02/10. Players assume the role of an astronaut who, after a space accident, finds himself stranded on a distant planet. To earn the money needed to repair his spaceship, he takes a job at a bustling space diner, preparing and delivering pizzas to quirky alien customers.
 
 ## Gameplay Core Loop
 
