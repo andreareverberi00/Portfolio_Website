@@ -7,7 +7,7 @@ tags: ["Unity", "C#", "Pixel Art", "Game Design"]
 details:
   engine: "Unity"
   role: "Game Designer"
-  duration: "8 months"
+  duration: "10 days"
   responsibilities:
     - "Whole game design process"
     - "Character design"
@@ -19,7 +19,7 @@ details:
 
 ## Overview
 
-Space Pizza is a pixel art game set in a vibrant cyberpunk world. Players assume the role of an astronaut who, after a space accident, finds himself stranded on a distant planet. To earn the money needed to repair his spaceship, he takes a job at a bustling space diner, preparing and delivering pizzas to quirky alien customers.
+Space Pizza is a pixel art time management game set in a vibrant cyberpunk world. Players assume the role of an astronaut who, after a space accident, finds himself stranded on a distant planet. To earn the money needed to repair his spaceship, he takes a job at a bustling space diner, preparing and delivering pizzas to quirky alien customers.
 
 ## Gameplay Core Loop
 
