@@ -3,7 +3,7 @@ title: "Lost Balance"
 date: "2023-01-10"
 description: "A survival horror game that revolves around maintaining equilibrium on three emotional axes."
 image: "/Assets/LostBalance.png"
-tags: ["Unreal Engine", "Blueprint", "Narrative Design"]
+tags: ["Unreal Engine", "Blueprint", ]
 details:
   engine: "Unreal Engine 5"
   role: "Game Designer"
@@ -13,6 +13,7 @@ details:
     - "Core gameplay mechanics and systems"
     - "Gameplay testing and iteration"
     - "Sound design"
+    - "Narrative Design"
 ---
 
 # Lost Balance

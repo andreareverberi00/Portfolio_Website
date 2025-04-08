@@ -24,6 +24,7 @@ Space Pizza is a pixel art game set in a vibrant cyberpunk world. Players assume
 ## Gameplay Core Loop
 
 The game revolves around a daily work cycle where players start their shift, receive orders, and prepare pizzas based on customer requests. Key elements include:
+
 - **Order Reception:** Customers make specific pizza requests, prompting a timer for delivery. Failure to deliver on time can result in losing money.
 - **Pizza Preparation:** Players gather ingredients from a limited pool, requiring strategic management to avoid discarding essential items.
 - **Evaluation:** Players must ensure pizzas are prepared correctly and on time to earn profits, while mistakes lead to monetary penalties.
@@ -31,6 +32,7 @@ The game revolves around a daily work cycle where players start their shift, rec
 ## Gameplay Mechanics
 
 The core mechanics emphasize resource management and interaction:
+
 - **Ingredient Pool Management:** Players must sort through a dynamic pool of ingredients to create the perfect pizza while discarding unwanted items.
 - **Customer Interaction:** Each order indicates the necessary ingredients with a visible timer, requiring quick and accurate completion to maintain customer satisfaction and avoid negative reviews.
 - **Reputation System:** Customer feedback affects the player's earnings, where reviews can lead to penalties or bonuses based on performance.
@@ -46,6 +48,11 @@ Featuring charming pixel art graphics, Space Pizza immerses players in a vivid c
 ## Ingredients
 
 Players manage two categories of ingredients:
+
 - **Good Ingredients:** Tomato, Mozzarella, Olives, Basil, Salami.
-- **Bad Ingredients:** Alien Tentacle, Gear, Slime, Cyborg Eye, Space Insect, requiring players to think critically about resource management.
+- **Bad Ingredients:** Alien Tentacle, Gear, Slime, Cyborg Eye, Space Insect.
+
+## Playable on
+
+[Play Space Pizza on itch.io](https://diegogu.itch.io/space-pizza)
 
