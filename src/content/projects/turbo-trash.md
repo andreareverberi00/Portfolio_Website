@@ -7,7 +7,7 @@ tags: ["Unity", "C#"]
 details:
   engine: "Unity"
   role: "Game Designer"
-  duration: "6 months"
+  duration: "3 months"
   responsibilities:
     - "Core gameplay mechanics and systems"
     - "Level design and progression"

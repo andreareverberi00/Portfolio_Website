@@ -7,7 +7,7 @@ tags: ["Unreal Engine", "Blueprint", ]
 details:
   engine: "Unreal Engine 5"
   role: "Game Designer"
-  duration: "6 months"
+  duration: "4 months"
   responsibilities:
     - "Story development"
     - "Core gameplay mechanics and systems"
