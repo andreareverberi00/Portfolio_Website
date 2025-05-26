@@ -11,6 +11,7 @@ import ProjectDetails from "./components/ProjectDetails";
 import emailjs from '@emailjs/browser';
 import TechTimeline from "./components/TechTimeline";
 import AllProjects from "./components/AllProjects";
+import ScrollToTop from "./components/utils/ScrollToTop";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -30,6 +31,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <AnimatePresence mode="wait">
         {isLoading ? (
           <LoadingScreen key="loading" />

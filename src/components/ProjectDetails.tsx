@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowLeft, PlayCircle } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useMemo } from "react";
 import { getProjectBySlug } from "./utils/markdownLoader";
 import ReactMarkdown from "react-markdown";
 import ProjectGallery from "./ProjectGallery";
@@ -111,7 +112,7 @@ export default function ProjectDetails() {
               </div>
             )}
 
-            <ProjectGallery projectName={project.title.replace(/\s+/g, '')} />
+            <ProjectGallery projectName={useMemo(() => project.title.replace(/\s+/g, ''), [project.title])} />
           </div>
         </motion.div>
       </div>

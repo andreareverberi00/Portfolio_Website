@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { getProjects } from "./utils/markdownLoader";
+import { getAllProjects } from "./utils/markdownLoader";
 
 export default function Projects() {
   const navigate = useNavigate();
-  const projects = getProjects();
+  const projects = getAllProjects();
   
   // Limit to 6 projects for the homepage
   const displayedProjects = projects.slice(0, 6);
@@ -20,9 +20,9 @@ export default function Projects() {
       </motion.h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {displayedProjects.map((project, index) => (
+        {displayedProjects.map((project) => (
           <motion.div
-            key={index}
+            key={project.slug} // Use project.slug as key
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             onClick={() => navigate(`/project/${project.slug}`)}

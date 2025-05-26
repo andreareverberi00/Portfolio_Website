@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 
 interface ProjectGalleryProps {
@@ -9,17 +9,19 @@ export default function ProjectGallery({ projectName }: ProjectGalleryProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   // Get all images from the project's assets folder
-  const images = import.meta.glob('/public/Assets/*/*.{png,jpg,jpeg,webp}', { eager: true });
-  const projectImages = Object.entries(images)
-    .filter(([path]) => path.includes(`/Assets/${projectName}/`))
-    .map(([path, module]) => {
-      // Remove the /public prefix from the path for the src
-      const src = (module as { default: string }).default.replace('/public', '');
-      return {
-        src,
-        alt: path.split('/').pop()?.split('.')[0] || '',
-      };
-    });
+  const projectImages = useMemo(() => {
+    const images = import.meta.glob('/public/Assets/*/*.{png,jpg,jpeg,webp}', { eager: true });
+    return Object.entries(images)
+      .filter(([path]) => path.includes(`/Assets/${projectName}/`))
+      .map(([path, module]) => {
+        // Remove the /public prefix from the path for the src
+        const src = (module as { default: string }).default.replace('/public', '');
+        return {
+          src,
+          alt: path.split('/').pop()?.split('.')[0] || '',
+        };
+      });
+  }, [projectName]);
 
   if (projectImages.length === 0) return null;
 
@@ -29,10 +31,10 @@ export default function ProjectGallery({ projectName }: ProjectGalleryProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {projectImages.map((image, index) => (
           <motion.div
-            key={index}
+            key={image.src} // Use image.src as key
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
+            transition={{ delay: index * 0.1 }} // index is available and can be used
             className="relative aspect-video cursor-pointer overflow-hidden rounded-lg"
             onClick={() => setSelectedImage(image.src)}
           >
@@ -56,7 +58,7 @@ export default function ProjectGallery({ projectName }: ProjectGalleryProps) {
           <motion.img
             src={selectedImage}
             alt="Selected"
-            className="max-h-[90vh] max-w-[90vw] object-contain"
+            className="max-h-[calc(100vh-4rem)] max-w-[calc(100vw-4rem)] object-contain"
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
           />
