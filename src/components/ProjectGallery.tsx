@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface ProjectGalleryProps {
   projectName: string;
@@ -7,6 +8,7 @@ interface ProjectGalleryProps {
 
 export default function ProjectGallery({ projectName }: ProjectGalleryProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
 
   // Get all images from the project's assets folder
   const projectImages = useMemo(() => {
@@ -36,7 +38,10 @@ export default function ProjectGallery({ projectName }: ProjectGalleryProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }} // index is available and can be used
             className="relative aspect-video cursor-pointer overflow-hidden rounded-lg"
-            onClick={() => setSelectedImage(image.src)}
+            onClick={() => {
+              setSelectedImage(image.src);
+              setCurrentIndex(index);
+            }}
           >
             <img
               src={image.src}
@@ -52,16 +57,56 @@ export default function ProjectGallery({ projectName }: ProjectGalleryProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedImage(null)}
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-1"
+          onClick={() => {
+            setSelectedImage(null);
+            setCurrentIndex(null);
+          }}
         >
+          {/* Image Display */}
           <motion.img
             src={selectedImage}
             alt="Selected"
-            className="max-h-[calc(100vh-4rem)] max-w-[calc(100vw-4rem)] object-contain"
+            className="max-h-[98vh] max-w-[98vw] object-contain"
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
+            // Prevent image click from closing modal if backdrop onClick is sensitive
+            onClick={(e) => e.stopPropagation()} 
           />
+
+          {/* Previous Arrow Button - Conditionally Rendered */}
+          {currentIndex !== null && currentIndex > 0 && (
+            <button
+              aria-label="Previous image"
+              className="absolute top-1/2 -translate-y-1/2 left-4 z-10 p-2 bg-black/50 rounded-full text-white hover:bg-black/75 transition-colors focus:outline-none"
+              onClick={(e) => {
+                e.stopPropagation();
+                // Navigation logic remains the same, already checks currentIndex !== null && currentIndex > 0
+                const newIndex = currentIndex - 1; // Already guarded by the render condition
+                setCurrentIndex(newIndex);
+                setSelectedImage(projectImages[newIndex].src);
+              }}
+            >
+              <ChevronLeft size={32} />
+            </button>
+          )}
+
+          {/* Next Arrow Button - Conditionally Rendered */}
+          {currentIndex !== null && currentIndex < projectImages.length - 1 && (
+            <button
+              aria-label="Next image"
+              className="absolute top-1/2 -translate-y-1/2 right-4 z-10 p-2 bg-black/50 rounded-full text-white hover:bg-black/75 transition-colors focus:outline-none"
+              onClick={(e) => {
+                e.stopPropagation();
+                // Navigation logic remains the same, already checks currentIndex !== null && currentIndex < projectImages.length - 1
+                const newIndex = currentIndex + 1; // Already guarded by the render condition
+                setCurrentIndex(newIndex);
+                setSelectedImage(projectImages[newIndex].src);
+              }}
+            >
+              <ChevronRight size={32} />
+            </button>
+          )}
         </motion.div>
       )}
     </div>
