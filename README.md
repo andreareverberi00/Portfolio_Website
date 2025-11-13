@@ -33,16 +33,19 @@ A sleek, responsive portfolio website showcasing the work and skills of Andrea R
 ### Installation
 
 1. Clone the repository
+
    ```
    git clone https://github.com/yourusername/game-designer-portfolio.git
    ```
 
 2. Navigate to the project directory
+
    ```
    cd game-designer-portfolio
    ```
 
 3. Install dependencies
+
    ```
    npm install
    # or
@@ -50,6 +53,7 @@ A sleek, responsive portfolio website showcasing the work and skills of Andrea R
    ```
 
 4. Start the development server
+
    ```
    npm run dev
    # or
@@ -74,6 +78,7 @@ src/
 ## 📱 Responsive Design
 
 The portfolio is fully responsive and optimized for:
+
 - Desktop screens
 - Tablets
 - Mobile devices
@@ -120,6 +125,8 @@ More details about the project, broken into logical sections.
 
 Additional information about features, design choices, or technical challenges.
 ```
+
+deploy retrigger
 
 ---
 
