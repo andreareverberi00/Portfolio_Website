@@ -126,8 +126,6 @@ More details about the project, broken into logical sections.
 Additional information about features, design choices, or technical challenges.
 ```
 
-deploy retrigger
-
 ---
 
 Designed and developed with ❤️

@@ -3,18 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSectionNavigation } from "../hooks/useSectionNavigation";
-
-const primaryLinks = [
-  { label: "Home", section: "home" },
-  { label: "About", section: "about" },
-  { label: "Projects", section: "projects" },
-  { label: "Contact", section: "contact" },
-];
-
-const secondaryLinks = [
-  { label: "All Projects", to: "/projects" },
-  { label: "Tech Timeline", to: "/techtimeline" },
-];
+import LanguageToggle from "./LanguageToggle";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -22,6 +12,8 @@ export default function Navigation() {
   const navigate = useNavigate();
   const location = useLocation();
   const scrollToSection = useSectionNavigation();
+  const { copy } = useLanguage();
+  const { nav } = copy;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,19 +48,25 @@ export default function Navigation() {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between gap-4 py-4">
-          <button
-            onClick={() => handlePrimaryLink("home")}
-            className="text-lg font-semibold tracking-wide text-white"
-            aria-label="Torna all'hero"
-          >
-            Andrea <span className="text-violet-400">Reverberi</span>
-          </button>
+          <div className="flex flex-col gap-2">
+            <LanguageToggle />
+            <button
+              onClick={() => handlePrimaryLink("home")}
+              className="text-lg font-semibold tracking-wide text-white text-left"
+              aria-label="Back to hero"
+            >
+              {nav.brandFirst} <span className="text-violet-400">{nav.brandLast}</span>
+              <span className="block text-xs uppercase tracking-[0.4em] text-gray-400">
+                {nav.brandTagline}
+              </span>
+            </button>
+          </div>
 
           <div className="hidden lg:flex items-center gap-10">
-            {primaryLinks.map((link) => (
+            {nav.primaryLinks.map((link) => (
               <button
-                key={link.label}
-                onClick={() => handlePrimaryLink(link.section)}
+                key={link.id}
+                onClick={() => handlePrimaryLink(link.id)}
                 className="text-sm uppercase tracking-widest text-gray-300 hover:text-white transition-colors"
               >
                 {link.label}
@@ -77,7 +75,7 @@ export default function Navigation() {
           </div>
 
           <div className="hidden lg:flex items-center gap-4">
-            {secondaryLinks.map((link) => (
+            {nav.secondaryLinks.map((link) => (
               <button
                 key={link.label}
                 onClick={() => handleSecondaryLink(link.to)}
@@ -92,7 +90,7 @@ export default function Navigation() {
               onClick={() => handlePrimaryLink("contact")}
               className="px-5 py-2 rounded-full bg-violet-600 text-white text-sm font-semibold shadow-lg shadow-violet-600/30"
             >
-              Let's talk
+              {nav.cta}
             </motion.button>
           </div>
 
@@ -114,10 +112,10 @@ export default function Navigation() {
               className="lg:hidden mb-4 rounded-2xl border border-white/10 bg-slate-900/95 p-6 shadow-xl shadow-black/40"
             >
               <div className="flex flex-col gap-4">
-                {primaryLinks.map((link) => (
+                {nav.primaryLinks.map((link) => (
                   <button
-                    key={link.label}
-                    onClick={() => handlePrimaryLink(link.section)}
+                    key={link.id}
+                    onClick={() => handlePrimaryLink(link.id)}
                     className="text-lg text-gray-200 text-left hover:text-white transition-colors"
                   >
                     {link.label}
@@ -125,7 +123,7 @@ export default function Navigation() {
                 ))}
 
                 <div className="border-t border-white/10 pt-4 mt-2 flex flex-col gap-2">
-                  {secondaryLinks.map((link) => (
+                  {nav.secondaryLinks.map((link) => (
                     <button
                       key={link.label}
                       onClick={() => handleSecondaryLink(link.to)}
@@ -140,7 +138,7 @@ export default function Navigation() {
                     onClick={() => handlePrimaryLink("contact")}
                     className="mt-4 rounded-full bg-violet-600 text-white font-semibold py-3"
                   >
-                    Let's talk
+                    {nav.cta}
                   </motion.button>
                 </div>
               </div>

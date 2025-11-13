@@ -2,18 +2,22 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { getProjects } from "./utils/markdownLoader";
 import { ArrowUpRight } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function Projects() {
   const navigate = useNavigate();
   const projects = getProjects();
+  const { copy, language } = useLanguage();
+  const { projects: projectCopy } = copy;
 
   const displayedProjects = projects.slice(0, 6);
   const hasMoreProjects = projects.length > displayedProjects.length;
 
   const formatDate = (date: string) => {
     const parsedDate = new Date(date);
-    if (Number.isNaN(parsedDate.getTime())) return "In progress";
-    return parsedDate.toLocaleDateString("en-GB", {
+    if (Number.isNaN(parsedDate.getTime())) return projectCopy.inProgress;
+    const locale = language === "it" ? "it-IT" : "en-GB";
+    return parsedDate.toLocaleDateString(locale, {
       month: "short",
       year: "numeric"
     });
@@ -28,18 +32,17 @@ export default function Projects() {
         className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12"
       >
         <div>
-          <p className="text-sm uppercase tracking-[0.3em] text-violet-200">Selected work</p>
-          <h2 className="text-4xl font-bold mt-3 mb-4">Playable experiences</h2>
+          <p className="text-sm uppercase tracking-[0.3em] text-violet-200">{projectCopy.kicker}</p>
+          <h2 className="text-4xl font-bold mt-3 mb-4">{projectCopy.title}</h2>
           <p className="text-gray-400 max-w-2xl">
-            Vertical slice, jam games e prototipi commissionati. Ogni progetto ha una scheda dettagliata con obiettivi,
-            ruoli e screenshot interattivi.
+            {projectCopy.description}
           </p>
         </div>
         <button
           onClick={() => navigate("/projects")}
           className="flex items-center gap-2 self-start border border-white/10 rounded-full px-5 py-2 text-sm text-gray-200 hover:bg-white/10 transition-colors"
         >
-          Sfoglia l&rsquo;archivio
+          {projectCopy.archiveButton}
           <ArrowUpRight size={16} />
         </button>
       </motion.div>
@@ -71,7 +74,7 @@ export default function Projects() {
               <div className="flex items-center justify-between text-sm text-gray-400">
                 <span>{project.tags[0] || "Game Design"}</span>
                 <span className="inline-flex items-center gap-1 text-violet-300">
-                  Case study
+                  {projectCopy.caseStudyLabel}
                   <ArrowUpRight size={14} />
                 </span>
               </div>
@@ -99,7 +102,7 @@ export default function Projects() {
           onClick={() => navigate("/projects")}
           className="px-8 py-3 rounded-full bg-violet-600 text-white font-semibold hover:bg-violet-700 transition-colors"
         >
-          {hasMoreProjects ? "View All Projects" : "Explore project archive"}
+          {hasMoreProjects ? projectCopy.primaryButton : projectCopy.fallbackButton}
         </motion.button>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Github, Instagram, Linkedin, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSectionNavigation } from "../hooks/useSectionNavigation";
+import { useLanguage } from "../context/LanguageContext";
 
 const socialLinks = [
   {
@@ -26,12 +27,9 @@ const socialLinks = [
   },
 ];
 
-const quickLinks = [
-  { label: "Progetti", to: "/projects" },
-  { label: "Tech Timeline", to: "/techtimeline" },
-];
-
 export default function Footer() {
+  const { copy } = useLanguage();
+  const { footer, nav } = copy;
   const scrollToSection = useSectionNavigation();
   const year = new Date().getFullYear();
 
@@ -41,12 +39,12 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr_1fr]">
           <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-violet-200/80 mb-4">Game Design</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-violet-200/80 mb-4">{footer.kicker}</p>
             <h3 className="text-2xl font-semibold text-white mb-4">
-              Costruiamo esperienze videoludiche memorabili.
+              {footer.title}
             </h3>
             <p className="text-gray-400 mb-6">
-              Dalla documentazione tecnica al level design, seguo l&rsquo;intero ciclo creativo per dare vita a prototipi e vertical slice curati in ogni dettaglio.
+              {footer.description}
             </p>
             <motion.button
               whileHover={{ scale: 1.03 }}
@@ -54,25 +52,25 @@ export default function Footer() {
               onClick={() => scrollToSection("contact")}
               className="rounded-full bg-white text-slate-900 px-6 py-3 font-semibold shadow-lg shadow-white/30"
             >
-              Pianifichiamo una call
+              {footer.button}
             </motion.button>
           </div>
 
           <div>
             <h4 className="text-sm font-semibold uppercase tracking-[0.3em] text-gray-400 mb-4">
-              Naviga
+              {footer.navTitle}
             </h4>
             <div className="flex flex-col gap-3 text-gray-300">
-              {["home", "about", "projects", "contact"].map((section) => (
+              {nav.primaryLinks.map((section) => (
                 <button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
+                  key={section.id}
+                  onClick={() => scrollToSection(section.id)}
                   className="text-left capitalize hover:text-white transition-colors"
                 >
-                  {section}
+                  {section.label}
                 </button>
               ))}
-              {quickLinks.map((link) => (
+              {nav.secondaryLinks.map((link) => (
                 <Link
                   key={link.label}
                   to={link.to}
@@ -86,7 +84,7 @@ export default function Footer() {
 
           <div>
             <h4 className="text-sm font-semibold uppercase tracking-[0.3em] text-gray-400 mb-4">
-              Social
+              {footer.socialTitle}
             </h4>
             <div className="flex flex-col gap-3">
               {socialLinks.map(({ label, icon: Icon, href }) => (
@@ -106,8 +104,8 @@ export default function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
-          <p>© {year} Andrea Reverberi. Tutti i diritti riservati.</p>
-          <p className="text-gray-400">Made from Modena · Unreal &amp; Unity certified</p>
+          <p>© {year} Andrea Reverberi. {footer.rights}</p>
+          <p className="text-gray-400">{footer.origin}</p>
         </div>
       </div>
     </footer>

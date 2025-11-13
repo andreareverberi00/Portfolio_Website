@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function TimelineCTA() {
+  const { copy } = useLanguage();
+  const { timelineCTA } = copy;
   return (
     <div className="container mx-auto px-4">
       <motion.div
@@ -15,20 +18,20 @@ export default function TimelineCTA() {
           <div>
             <p className="inline-flex items-center gap-2 text-sm uppercase tracking-[0.3em] text-violet-200">
               <Sparkles size={16} />
-              Mini game
+              {timelineCTA.kicker}
             </p>
             <h3 className="text-3xl font-semibold text-white mt-3 mb-2">
-              Techdle — indovina l&rsquo;evento tech!
+              {timelineCTA.title}
             </h3>
             <p className="text-gray-300 max-w-2xl">
-              Metti alla prova le tue conoscenze storiche con un gioco rapido e reattivo. Perfetto per eventi, talk e workshop sul game design.
+              {timelineCTA.description}
             </p>
           </div>
           <Link
             to="/techtimeline"
             className="group inline-flex items-center justify-center rounded-full bg-white/90 px-6 py-3 text-slate-900 font-semibold shadow-xl shadow-white/40 hover:bg-white transition-colors"
           >
-            Gioca ora
+            {timelineCTA.button}
             <ArrowUpRight className="ml-2 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
           </Link>
         </div>

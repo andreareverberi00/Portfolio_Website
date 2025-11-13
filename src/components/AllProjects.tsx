@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { getProjects } from "./utils/markdownLoader";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { useSectionNavigation } from "../hooks/useSectionNavigation";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function AllProjects() {
   const navigate = useNavigate();
   const projects = getProjects();
   const scrollToSection = useSectionNavigation();
+  const { copy } = useLanguage();
+  const { allProjects, projects: projectsCopy } = copy;
   const tags = Array.from(new Set(projects.flatMap((project) => project.tags))).slice(0, 8);
 
   return (
@@ -21,9 +24,9 @@ export default function AllProjects() {
             className="text-violet-300 hover:text-white flex items-center gap-2 text-sm uppercase tracking-[0.3em]"
           >
             <ArrowLeft size={16} />
-            Home
+            {allProjects.backLabel}
           </motion.button>
-          <p className="text-gray-400 text-sm">Total case studies: {projects.length}</p>
+          <p className="text-gray-400 text-sm">{allProjects.statsLabel}: {projects.length}</p>
         </div>
 
         <motion.div
@@ -31,9 +34,9 @@ export default function AllProjects() {
           animate={{ opacity: 1, y: 0 }}
           className="space-y-6 text-center max-w-3xl mx-auto"
         >
-          <h2 className="text-4xl font-bold">Project Archive</h2>
+          <h2 className="text-4xl font-bold">{allProjects.title}</h2>
           <p className="text-gray-400">
-            Dal mobile casual allo short horror: ogni progetto include obiettivi, responsabilità e risultati.
+            {allProjects.description}
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             {tags.map((tag) => (
@@ -72,7 +75,7 @@ export default function AllProjects() {
                 <div className="flex items-center justify-between text-sm text-gray-400">
                   <span>{project.details.role}</span>
                   <span className="inline-flex items-center gap-1 text-violet-300">
-                    Read case study
+                    {projectsCopy.caseStudyLabel}
                     <ArrowUpRight size={14} />
                   </span>
                 </div>
@@ -91,15 +94,15 @@ export default function AllProjects() {
         </div>
 
         <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-center space-y-4">
-          <h3 className="text-2xl font-semibold">Hai un concept pronto per la prossima jam?</h3>
+          <h3 className="text-2xl font-semibold">{allProjects.ctaTitle}</h3>
           <p className="text-gray-400">
-            Posso affiancarti nella definizione del core loop, nelle presentazioni per publisher o nella docenza universitaria.
+            {allProjects.ctaDescription}
           </p>
           <button
             onClick={() => scrollToSection("contact")}
             className="inline-flex items-center gap-2 rounded-full bg-violet-600 px-6 py-3 font-semibold text-white"
           >
-            Contattami
+            {allProjects.ctaButton}
             <ArrowUpRight size={16} />
           </button>
         </div>

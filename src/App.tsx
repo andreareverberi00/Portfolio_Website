@@ -14,6 +14,7 @@ import AllProjects from "./components/AllProjects";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import TimelineCTA from "./components/TimelineCTA";
+import { LanguageProvider } from "./context/LanguageContext";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -32,32 +33,34 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <ScrollToTop />
-      <AnimatePresence mode="wait">
-        {isLoading ? (
-          <LoadingScreen key="loading" />
-        ) : (
-          <div className="relative min-h-screen bg-slate-950 text-white overflow-hidden">
-            <div className="pointer-events-none absolute inset-0">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#4c1d95,transparent_55%)] opacity-70" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,#0f172a,transparent_65%)] opacity-80" />
-              <div className="absolute inset-0 bg-noise opacity-20" />
+    <LanguageProvider>
+      <Router>
+        <ScrollToTop />
+        <AnimatePresence mode="wait">
+          {isLoading ? (
+            <LoadingScreen key="loading" />
+          ) : (
+            <div className="relative min-h-screen bg-slate-950 text-white overflow-hidden">
+              <div className="pointer-events-none absolute inset-0">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#4c1d95,transparent_55%)] opacity-70" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,#0f172a,transparent_65%)] opacity-80" />
+                <div className="absolute inset-0 bg-noise opacity-20" />
+              </div>
+              <Navigation />
+              <main className="relative z-10 pt-24 pb-16">
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/project/:projectId" element={<ProjectDetails />} />
+                  <Route path="/techtimeline" element={<TechTimeline />} />
+                  <Route path="/projects" element={<AllProjects />} />
+                </Routes>
+              </main>
+              <Footer />
             </div>
-            <Navigation />
-            <main className="relative z-10 pt-24 pb-16">
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/project/:projectId" element={<ProjectDetails />} />
-                <Route path="/techtimeline" element={<TechTimeline />} />
-                <Route path="/projects" element={<AllProjects />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        )}
-      </AnimatePresence>
-    </Router>
+          )}
+        </AnimatePresence>
+      </Router>
+    </LanguageProvider>
   );
 }
 

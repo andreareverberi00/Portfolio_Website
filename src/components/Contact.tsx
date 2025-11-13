@@ -11,6 +11,7 @@ import {
   Megaphone
 } from "lucide-react";
 import emailjs from "@emailjs/browser";
+import { useLanguage } from "../context/LanguageContext";
 
 interface FormData {
   name: string;
@@ -20,34 +21,22 @@ interface FormData {
   timeline: string;
 }
 
-export default function Contact() {
-  const [formData, setFormData] = useState<FormData>({
+function createInitialFormState(): FormData {
+  return {
     name: "",
     email: "",
     message: "",
-    projectType: "Prototype / Vertical Slice",
-    timeline: "1-2 settimane"
-  });
+    projectType: "prototype",
+    timeline: "1-2-weeks"
+  };
+}
+
+export default function Contact() {
+  const { copy } = useLanguage();
+  const { contact } = copy;
+  const [formData, setFormData] = useState<FormData>(createInitialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
-
-  const contactHighlights = [
-    {
-      icon: <CalendarDays className="w-5 h-5" />,
-      title: "Tempo di risposta",
-      description: "Entro 24 ore nei giorni feriali"
-    },
-    {
-      icon: <Megaphone className="w-5 h-5" />,
-      title: "Cosa cerco",
-      description: "Prototipi indie, workshop accademici, mentorship"
-    },
-    {
-      icon: <Globe className="w-5 h-5" />,
-      title: "Lingue",
-      description: "Italiano · English"
-    }
-  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,13 +44,19 @@ export default function Contact() {
     setSubmitStatus("idle");
 
     try {
+      const projectTypeLabel =
+        contact.form.projectTypeOptions.find((option) => option.value === formData.projectType)?.label ||
+        formData.projectType;
+      const timelineLabel =
+        contact.form.timelineOptions.find((option) => option.value === formData.timeline)?.label ||
+        formData.timeline;
       const result = await emailjs.send(
         import.meta.env.VITE_PUBLIC_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_PUBLIC_EMAILJS_TEMPLATE_ID,
         {
           from_name: formData.name,
           from_email: formData.email,
-          message: `${formData.message}\n\nProject type: ${formData.projectType}\nTimeline: ${formData.timeline}`,
+          message: `${formData.message}\n\n${contact.form.metaProjectTypeLabel}: ${projectTypeLabel}\n${contact.form.metaTimelineLabel}: ${timelineLabel}`,
           to_name: "Andrea",
         },
         import.meta.env.VITE_PUBLIC_EMAILJS_PUBLIC_KEY
@@ -69,13 +64,7 @@ export default function Contact() {
 
       console.log("Email sent successfully:", result);
       setSubmitStatus("success");
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
-        projectType: "Prototype / Vertical Slice",
-        timeline: "1-2 settimane"
-      });
+      setFormData(createInitialFormState());
     } catch (error) {
       console.error("Error sending email:", error);
       setSubmitStatus("error");
@@ -84,7 +73,7 @@ export default function Contact() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData(prev => ({
       ...prev,
       [e.target.id]: e.target.value
@@ -103,31 +92,36 @@ export default function Contact() {
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
             <div className="space-y-8">
               <div>
-                <p className="text-sm uppercase tracking-[0.3em] text-violet-200">Contact</p>
-                <h2 className="text-4xl font-bold mb-4 mt-2">Let's build something memorable</h2>
+                <p className="text-sm uppercase tracking-[0.3em] text-violet-200">{contact.kicker}</p>
+                <h2 className="text-4xl font-bold mb-4 mt-2">{contact.title}</h2>
                 <p className="text-gray-400">
-                  Raccontami il tuo concept, una jam imminente o l'idea per un workshop.
-                  Posso supportarti su documentation sprint, level design e produzione audio.
+                  {contact.description}
                 </p>
               </div>
 
               <div className="space-y-4">
-                {contactHighlights.map((highlight) => (
+                {contact.highlights.map((highlight, idx) => {
+                  const icons = [CalendarDays, Megaphone, Globe];
+                  const Icon = icons[idx] ?? CalendarDays;
+                  return (
                   <div
                     key={highlight.title}
                     className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-4"
                   >
-                    <div className="text-violet-300">{highlight.icon}</div>
+                    <div className="text-violet-300">
+                      <Icon className="w-5 h-5" />
+                    </div>
                     <div>
                       <p className="text-white font-semibold">{highlight.title}</p>
                       <p className="text-gray-400 text-sm">{highlight.description}</p>
                     </div>
                   </div>
-                ))}
+                );
+                })}
               </div>
 
               <div>
-                <p className="text-sm uppercase tracking-[0.3em] text-gray-400 mb-4">Network</p>
+                <p className="text-sm uppercase tracking-[0.3em] text-gray-400 mb-4">{contact.networkLabel}</p>
                 <div className="flex gap-4">
                   <motion.a
                     whileHover={{ scale: 1.1 }}
@@ -168,7 +162,7 @@ export default function Contact() {
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-                      Nome *
+                      {contact.form.nameLabel}
                     </label>
                     <input
                       type="text"
@@ -182,7 +176,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                      Email *
+                      {contact.form.emailLabel}
                     </label>
                     <input
                       type="email"
@@ -199,7 +193,7 @@ export default function Contact() {
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
                     <label htmlFor="projectType" className="block text-sm font-medium text-gray-300 mb-2">
-                      Tipo di progetto *
+                      {contact.form.projectTypeLabel}
                     </label>
                     <select
                       id="projectType"
@@ -208,15 +202,16 @@ export default function Contact() {
                       disabled={isSubmitting}
                       className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-violet-400 focus:border-transparent disabled:opacity-50"
                     >
-                      <option>Prototype / Vertical Slice</option>
-                      <option>Game Jam o Contest</option>
-                      <option>Mentorship / Workshop</option>
-                      <option>Sound & Narrative</option>
+                      {contact.form.projectTypeOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div>
                     <label htmlFor="timeline" className="block text-sm font-medium text-gray-300 mb-2">
-                      Timeline stimata
+                      {contact.form.timelineLabel}
                     </label>
                     <select
                       id="timeline"
@@ -225,17 +220,18 @@ export default function Contact() {
                       disabled={isSubmitting}
                       className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-violet-400 focus:border-transparent disabled:opacity-50"
                     >
-                      <option>1-2 settimane</option>
-                      <option>1 mese</option>
-                      <option>3+ mesi</option>
-                      <option>Da definire</option>
+                      {contact.form.timelineOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
-                    Messaggio *
+                    {contact.form.messageLabel}
                   </label>
                   <textarea
                     id="message"
@@ -254,17 +250,17 @@ export default function Contact() {
                   disabled={isSubmitting}
                   className="w-full bg-violet-600 text-white font-semibold py-3 rounded-lg hover:bg-violet-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Mail className="w-5 h-5" />
-                      Send Message
-                    </>
-                  )}
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    {contact.form.sendingLabel}
+                  </>
+                ) : (
+                  <>
+                    <Mail className="w-5 h-5" />
+                    {contact.form.submitLabel}
+                  </>
+                )}
                 </motion.button>
 
                 {submitStatus === "success" && (
@@ -273,7 +269,7 @@ export default function Contact() {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-green-400 text-center"
                   >
-                    Messaggio inviato! Ti risponderò il prima possibile.
+                    {contact.form.success}
                   </motion.p>
                 )}
 
@@ -283,7 +279,7 @@ export default function Contact() {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-red-400 text-center"
                   >
-                    Qualcosa è andato storto. Riprova più tardi.
+                    {contact.form.error}
                   </motion.p>
                 )}
               </form>

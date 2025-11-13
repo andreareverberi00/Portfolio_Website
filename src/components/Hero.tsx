@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
 import { Gamepad2, ChevronDown, MapPin, Sparkles, Timer } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function Hero() {
+  const { copy } = useLanguage();
+  const { hero } = copy;
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -24,23 +27,6 @@ export default function Hero() {
       }
     }
   };
-
-  const heroStats = [
-    { label: "Playable prototypes", value: "12+" },
-    { label: "Game jams & festivals", value: "8" },
-    { label: "Engines", value: "Unreal · Unity" }
-  ];
-
-  const heroHighlights = [
-    {
-      title: "Systems-first Design",
-      description: "Economy balancing, level pacing and onboarding tailored to each platform."
-    },
-    {
-      title: "Narrative & Documentation",
-      description: "Full GDDs, beat charts and feature briefs that keep cross-team collaboration aligned."
-    }
-  ];
 
   const scrollTo = (sectionId: string) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
@@ -83,7 +69,7 @@ export default function Hero() {
             className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-200 uppercase tracking-[0.3em] mb-6"
           >
             <Sparkles size={16} className="text-violet-300" />
-            Available for freelance & relocation
+            {hero.badge}
           </motion.div>
           <motion.div
             variants={itemVariants}
@@ -97,15 +83,15 @@ export default function Hero() {
             variants={itemVariants}
             className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-purple-200"
           >
-            Andrea Reverberi
-            <span className="block text-3xl md:text-4xl mt-4 text-violet-300">Game Designer</span>
+            {hero.name}
+            <span className="block text-3xl md:text-4xl mt-4 text-violet-300">{hero.role}</span>
           </motion.h1>
 
           <motion.p
             variants={itemVariants}
             className="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl mx-auto"
           >
-            Italian game designer crafting emotionally charged experiences through inventive mechanics and strong narrative beats. I combine Unreal & Unity prototyping, UX systems and sound direction to deliver polished vertical slices.
+            {hero.description}
           </motion.p>
 
           <motion.div
@@ -118,7 +104,7 @@ export default function Hero() {
               className="px-8 py-3 rounded-full bg-violet-600 text-white font-semibold hover:bg-violet-700 transition-colors"
               onClick={() => scrollTo("projects")}
             >
-              View My Work
+              {hero.ctas.primary}
             </motion.button>
             <Link to="/techtimeline" className="contents">
               <motion.button
@@ -126,7 +112,7 @@ export default function Hero() {
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-3 rounded-full border-2 border-violet-300/60 text-violet-200 font-semibold hover:bg-white/10 transition-colors"
               >
-                Play Techdle
+                {hero.ctas.secondary}
               </motion.button>
             </Link>
           </motion.div>
@@ -136,7 +122,7 @@ export default function Hero() {
           variants={containerVariants}
           className="mt-12 grid gap-4 sm:grid-cols-3"
         >
-          {heroStats.map((stat) => (
+          {hero.stats.map((stat) => (
             <motion.div
               key={stat.label}
               variants={itemVariants}
@@ -154,7 +140,7 @@ export default function Hero() {
           variants={containerVariants}
           className="mt-10 grid gap-6 md:grid-cols-2"
         >
-          {heroHighlights.map((highlight) => (
+          {hero.highlights.map((highlight) => (
             <motion.div
               key={highlight.title}
               variants={itemVariants}
@@ -191,8 +177,8 @@ export default function Hero() {
       >
         <Timer className="text-violet-300" size={24} />
         <div>
-          <p className="text-xs uppercase tracking-[0.4em] text-gray-400">Focus 2025</p>
-          <p className="text-sm text-white">Vertical slices · Narrative horror</p>
+          <p className="text-xs uppercase tracking-[0.4em] text-gray-400">{hero.focus.label}</p>
+          <p className="text-sm text-white">{hero.focus.value}</p>
         </div>
       </motion.div>
 
@@ -204,8 +190,8 @@ export default function Hero() {
       >
         <MapPin className="text-violet-200" size={24} />
         <div>
-          <p className="text-xs uppercase tracking-[0.4em] text-gray-400">Based in</p>
-          <p className="text-sm text-white">Modena, Italy · Remote friendly</p>
+          <p className="text-xs uppercase tracking-[0.4em] text-gray-400">{hero.location.label}</p>
+          <p className="text-sm text-white">{hero.location.value}</p>
         </div>
       </motion.div>
     </motion.section>
