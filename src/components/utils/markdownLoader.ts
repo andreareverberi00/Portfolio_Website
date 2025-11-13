@@ -21,8 +21,6 @@ export function getProjects(): MarkdownProject[] {
     as: 'raw',
     eager: true 
   });
-  console.log('Glob results:', projectFiles);
-
   
   const projects: MarkdownProject[] = [];
   

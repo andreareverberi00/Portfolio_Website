@@ -6,11 +6,14 @@ import About from "./components/About";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import Navigation from "./components/Navigation";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProjectDetails from "./components/ProjectDetails";
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
 import TechTimeline from "./components/TechTimeline";
 import AllProjects from "./components/AllProjects";
+import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
+import TimelineCTA from "./components/TimelineCTA";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -30,45 +33,27 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <AnimatePresence mode="wait">
         {isLoading ? (
           <LoadingScreen key="loading" />
         ) : (
-          <div className="bg-gray-900 text-white">
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <>
-                    <Navigation />
-                    <main>
-                      <section id="home">
-                        <Hero />
-                      </section>
-                      <section id="about">
-                        <About />
-                      </section>
-                      <section id="projects">
-                        <Projects />
-                      </section>
-                      <section id="contact">
-                        <Contact />
-                      </section>
-                      <section id="techdle-button" className="text-center my-4 justify-center flex">
-                        <Link to="/techtimeline">
-                          <button className="w-300 p-10 bg-violet-600 text-white font-semibold py-3 rounded-lg hover:bg-violet-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                            Techdle
-                          </button>
-                        </Link>
-                      </section>
-                    </main>
-                  </>
-                }
-              />
-              <Route path="/project/:projectId" element={<ProjectDetails />} />
-              <Route path="/techtimeline" element={<TechTimeline />} />
-              <Route path="/projects" element={<AllProjects />} />
-            </Routes>
+          <div className="relative min-h-screen bg-slate-950 text-white overflow-hidden">
+            <div className="pointer-events-none absolute inset-0">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#4c1d95,transparent_55%)] opacity-70" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,#0f172a,transparent_65%)] opacity-80" />
+              <div className="absolute inset-0 bg-noise opacity-20" />
+            </div>
+            <Navigation />
+            <main className="relative z-10 pt-24 pb-16">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/project/:projectId" element={<ProjectDetails />} />
+                <Route path="/techtimeline" element={<TechTimeline />} />
+                <Route path="/projects" element={<AllProjects />} />
+              </Routes>
+            </main>
+            <Footer />
           </div>
         )}
       </AnimatePresence>
@@ -77,3 +62,34 @@ function App() {
 }
 
 export default App;
+
+function HomePage() {
+  useEffect(() => {
+    const pendingSection = sessionStorage.getItem("pending-scroll");
+    if (pendingSection) {
+      sessionStorage.removeItem("pending-scroll");
+      requestAnimationFrame(() => {
+        const element = document.getElementById(pendingSection);
+        element?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+  }, []);
+
+  return (
+    <div className="flex flex-col gap-24">
+      <section id="home">
+        <Hero />
+      </section>
+      <section id="about">
+        <About />
+      </section>
+      <section id="projects">
+        <Projects />
+      </section>
+      <TimelineCTA />
+      <section id="contact">
+        <Contact />
+      </section>
+    </div>
+  );
+}
