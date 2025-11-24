@@ -56,35 +56,37 @@ export default function Projects() {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ delay: index * 0.05 }}
             onClick={() => navigate(`/project/${project.slug}`)}
-            className="group cursor-pointer rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur shadow-2xl shadow-black/30"
+            className="group cursor-pointer rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm shadow-xl shadow-black/20 hover:shadow-violet-600/20 hover:border-violet-500/30 transition-all duration-500"
           >
             <div className="relative h-64 overflow-hidden">
               <img
                 src={project.image}
                 alt={project.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-              <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-black/50 px-4 py-1 text-sm text-white">
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
+              <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-black/50 backdrop-blur-md px-4 py-1.5 text-xs font-medium text-white border border-white/10">
                 {formatDate(project.date)}
               </div>
             </div>
 
-            <div className="p-6 space-y-4">
-              <div className="flex items-center justify-between text-sm text-gray-400">
-                <span>{project.tags[0] || "Game Design"}</span>
-                <span className="inline-flex items-center gap-1 text-violet-300">
-                  {projectCopy.caseStudyLabel}
-                  <ArrowUpRight size={14} />
-                </span>
+            <div className="p-6 space-y-4 relative">
+              <div className="absolute -top-10 right-6 p-3 rounded-full bg-violet-600 text-white shadow-lg shadow-violet-600/30 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                <ArrowUpRight size={20} />
               </div>
-              <h3 className="text-2xl font-semibold text-white">{project.title}</h3>
-              <p className="text-gray-300 line-clamp-3">{project.description}</p>
-              <div className="flex flex-wrap gap-2">
+
+              <div className="flex items-center justify-between text-sm text-violet-300/80 font-medium">
+                <span>{project.tags[0] || "Game Design"}</span>
+              </div>
+
+              <h3 className="text-2xl font-bold text-white group-hover:text-violet-300 transition-colors duration-300">{project.title}</h3>
+              <p className="text-gray-400 line-clamp-3 leading-relaxed text-sm">{project.description}</p>
+
+              <div className="flex flex-wrap gap-2 pt-2">
                 {project.tags.slice(0, 3).map((tag) => (
                   <span
                     key={tag}
-                    className="text-xs uppercase tracking-[0.2em] rounded-full border border-white/10 px-3 py-1 text-gray-300"
+                    className="text-[10px] uppercase tracking-[0.1em] rounded-full border border-white/10 bg-white/5 px-3 py-1 text-gray-400 group-hover:border-violet-500/30 group-hover:text-violet-200 transition-colors duration-300"
                   >
                     {tag}
                   </span>

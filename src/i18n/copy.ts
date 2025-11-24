@@ -51,7 +51,7 @@ export const translations = {
       },
       location: {
         label: "Based in",
-        value: "Modena, Italy · Remote friendly"
+        value: "Reggio Emilia, Italy · Remote friendly"
       }
     },
     about: {
@@ -104,7 +104,7 @@ export const translations = {
       ],
       locationTitle: "Location & Contact",
       basedInLabel: "Based in",
-      basedInValue: "Modena, Italy",
+      basedInValue: "Reggio Emilia, Italy",
       basedInNote: "Available for remote work and onsite workshops across Europe.",
       contactTitle: "Contact",
       contactNote: "Ping me for mentorship, lectures or bespoke prototype work."
@@ -175,7 +175,7 @@ export const translations = {
       navTitle: "Navigate",
       socialTitle: "Social",
       rights: "All rights reserved.",
-      origin: "Based in Modena · Unreal & Unity certified"
+      origin: "Based in Reggio Emilia · Unreal & Unity certified"
     },
     timelineCTA: {
       kicker: "Mini game",
@@ -268,7 +268,7 @@ export const translations = {
       },
       location: {
         label: "Base operativa",
-        value: "Modena, Italia · Disponibile da remoto"
+        value: "Reggio Emilia, Italia · Disponibile da remoto"
       }
     },
     about: {
@@ -321,7 +321,7 @@ export const translations = {
       ],
       locationTitle: "Dove lavoro & contatti",
       basedInLabel: "Base",
-      basedInValue: "Modena, Italia",
+      basedInValue: "Reggio Emilia, Italia",
       basedInNote: "Disponibile per collaborazioni remote e workshop onsite in Europa.",
       contactTitle: "Contatti",
       contactNote: "Scrivimi per mentorship, docenze o prototipi su misura."
@@ -392,7 +392,7 @@ export const translations = {
       navTitle: "Naviga",
       socialTitle: "Social",
       rights: "Tutti i diritti riservati.",
-      origin: "Made in Modena · Certificato Unreal & Unity"
+      origin: "Made in Reggio Emilia · Certificato Unreal & Unity"
     },
     timelineCTA: {
       kicker: "Mini game",

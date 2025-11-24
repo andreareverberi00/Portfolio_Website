@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Github, Instagram, Linkedin, Mail } from "lucide-react";
+import { Github, Instagram, Linkedin, Mail, Globe } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSectionNavigation } from "../hooks/useSectionNavigation";
 import { useLanguage } from "../context/LanguageContext";
@@ -24,6 +24,11 @@ const socialLinks = [
     label: "GitHub",
     icon: Github,
     href: "https://github.com/andreareverberi00",
+  },
+  {
+    label: "F6S",
+    icon: Globe,
+    href: "https://www.f6s.com/andrea-reverberi",
   },
 ];
 

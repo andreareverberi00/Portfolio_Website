@@ -47,7 +47,7 @@ function App() {
                 <div className="absolute inset-0 bg-noise opacity-20" />
               </div>
               <Navigation />
-              <main className="relative z-10 pt-24 pb-16">
+              <main className="relative z-10 pt-32 pb-16">
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/project/:projectId" element={<ProjectDetails />} />

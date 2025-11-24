@@ -121,14 +121,14 @@ export default function ProjectDetails() {
               </ul>
             </div>
 
-            {project.title === "Turbo Trash" && (
+            {project.demoUrl && (
               <div className="rounded-3xl border border-violet-500/40 bg-violet-500/10 p-6">
                 <h3 className="text-xl font-semibold text-white mb-3">{projectDetails.playableTitle}</h3>
                 <p className="text-gray-300 mb-4">{projectDetails.playableDescription}</p>
                 <motion.a
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  href="https://play.unity.com/en/games/d76a7f3f-b0ab-4ead-97ba-a5064f6c3b3e/turbo-trash"
+                  href={project.demoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-slate-900"
