@@ -104,19 +104,19 @@ export default function Contact() {
                   const icons = [CalendarDays, Megaphone, Globe];
                   const Icon = icons[idx] ?? CalendarDays;
                   return (
-                  <div
-                    key={highlight.title}
-                    className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-4"
-                  >
-                    <div className="text-violet-300">
-                      <Icon className="w-5 h-5" />
+                    <div
+                      key={highlight.title}
+                      className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-4"
+                    >
+                      <div className="text-violet-300">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <p className="text-white font-semibold">{highlight.title}</p>
+                        <p className="text-gray-400 text-sm">{highlight.description}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-white font-semibold">{highlight.title}</p>
-                      <p className="text-gray-400 text-sm">{highlight.description}</p>
-                    </div>
-                  </div>
-                );
+                  );
                 })}
               </div>
 
@@ -152,6 +152,16 @@ export default function Contact() {
                     className="rounded-full border border-white/10 p-3 text-gray-300 hover:text-white"
                   >
                     <Linkedin />
+                  </motion.a>
+                  <motion.a
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    href="https://www.f6s.com/andrea-reverberi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-full border border-white/10 p-3 text-gray-300 hover:text-white"
+                  >
+                    <Globe />
                   </motion.a>
                 </div>
               </div>
@@ -250,17 +260,17 @@ export default function Contact() {
                   disabled={isSubmitting}
                   className="w-full bg-violet-600 text-white font-semibold py-3 rounded-lg hover:bg-violet-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    {contact.form.sendingLabel}
-                  </>
-                ) : (
-                  <>
-                    <Mail className="w-5 h-5" />
-                    {contact.form.submitLabel}
-                  </>
-                )}
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      {contact.form.sendingLabel}
+                    </>
+                  ) : (
+                    <>
+                      <Mail className="w-5 h-5" />
+                      {contact.form.submitLabel}
+                    </>
+                  )}
                 </motion.button>
 
                 {submitStatus === "success" && (

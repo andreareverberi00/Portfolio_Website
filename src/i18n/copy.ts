@@ -5,7 +5,7 @@ export const translations = {
     nav: {
       brandFirst: "Andrea",
       brandLast: "Reverberi",
-      brandTagline: "Game Designer",
+      brandTagline: "Game Designer & Frontend Dev",
       primaryLinks: [
         { id: "home", label: "Home" },
         { id: "about", label: "About" },
@@ -21,28 +21,28 @@ export const translations = {
     hero: {
       badge: "Available for freelance & relocation",
       name: "Andrea Reverberi",
-      role: "Game Designer",
+      role: "Game Designer & Frontend Developer",
       description:
-        "Italian game designer crafting emotionally charged experiences through inventive mechanics and strong narrative beats. I combine Unreal & Unity prototyping, UX systems and sound direction to deliver polished vertical slices.",
+        "Italian game designer and frontend developer building interactive experiences from web apps to horror games. I work with React, TypeScript, Next.js and Unreal Engine 5/Unity, using AI tools to prototype fast and craft small polished vertical slices.",
       ctas: {
         primary: "View my work",
         secondary: "Play Techdle"
       },
       stats: [
-        { label: "Playable prototypes", value: "12+" },
-        { label: "Game jams & festivals", value: "8" },
+        { label: "Indie studio", value: "Unseen Cat" },
+        { label: "Current project", value: "Bedtime Nightmare" },
         { label: "Engines", value: "Unreal · Unity" }
       ],
       highlights: [
         {
           title: "Systems-first Design",
           description:
-            "Economy balancing, level pacing and onboarding tailored to each platform."
+            "Core loops, pacing and onboarding tuned for both horror and casual experiences."
         },
         {
           title: "Narrative & Documentation",
           description:
-            "Full GDDs, beat charts and feature briefs that keep cross-team collaboration aligned."
+            "GDDs, beat charts and feature briefs that keep small cross-discipline teams aligned."
         }
       ],
       focus: {
@@ -58,48 +58,48 @@ export const translations = {
       kicker: "About",
       title: "Design, document, iterate.",
       description:
-        "I started as a narrative designer and now guide indie and corporate teams from vision to vertical slice. Playtests, difficulty tuning and living documentation keep every pod aligned and shipping faster.",
+        "By day I’m a frontend developer working on digital products for Paramount, by night I design videogames. After completing a Game Design master at Digital Bros Game Academy, I co-founded Unseen Cat Studio with Diego, where I’m specialising in system design and horror projects like Bedtime Nightmare. I keep iterating on prototypes, studying how players interact with systems, and my long-term goal is to work on a multiplayer-focused game.",
       metrics: [
-        { value: "4+", label: "years bridging GDD and prototyping" },
-        { value: "8", label: "game jams & festivals" },
-        { value: "15+", label: "moderated playtests" },
-        { value: "6", label: "multi-platform teams" }
+        { value: "Multiple", label: "playable prototypes and academy projects" },
+        { value: "Several", label: "published games on Itch.io, Steam and Unity Play" },
+        { value: "Ongoing", label: "development of Bedtime Nightmare" },
+        { value: "Daily", label: "frontend work with React & TypeScript" }
       ],
       processTitle: "Process",
       process: [
         {
-          title: "Discovery & Vision",
-          description: "Fantasy alignment, competitive audits and retention KPIs."
+          title: "Concept & Direction",
+          description: "I collect ideas, references and the mood I want the game to express. I define what the player should feel and which systems actually matter. Lots of fast experimentation, no useless theory."
         },
         {
-          title: "Documentation",
-          description: "Modular GDDs, narrative beat charts and progression systems."
+          title: "Prototyping & Living Documentation",
+          description: "I build quick prototypes in Unreal/Unity and keep lightweight documentation: systems, UX, flows, notes for Collaborators. I update things as the game evolves, not before."
         },
         {
-          title: "Playtest & Iteration",
-          description: "Moderated sessions, surveys and prioritized improvement roadmaps."
+          title: "Fast Playtesting & Iteration",
+          description: "I test builds myself, along with friends and whoever touches the controller. I watch what breaks, what works and iterate immediately. No fluff — just practical improvements to the systems."
         }
       ],
       skills: [
         {
           title: "Game Engines",
           description:
-            "Rapid prototyping in Unreal Engine 5 (Blueprints) and Unity (C#), with Ren'Py/Ink for branching dialogues and narrative tools."
+            "I prototype fast in Unreal Engine 5 (Blueprints) and Unity (C#), focusing on gameplay feel, systems and level flow more than raw code. I also experiment in Roblox Studio when exploring multiplayer ideas. My workflow is: build → test → tweak, keeping everything playable as early as possible."
         },
         {
           title: "Development",
           description:
-            "Bridging gameplay and UX through scripting, shaders and tooling. Comfortable with gameplay systems, UI logic and telemetry."
+            "I know how to code and build features when needed, but when it comes to games I mainly work on system design, level design, UX flow and narrative structure rather than heavy engineering. I bridge designers and developers easily thanks to my frontend background (React, TypeScript, Next.js), making me comfortable writing logic, debugging and communicating technical needs without drowning in code."
         },
         {
           title: "Design Tools",
           description:
-            "Figma, Miro and Notion power my documentation pipeline—from beat charts to annotated UX flows."
+            "Figma is my main brain for UI/UX, flowcharts and system diagrams. Milanote for moodboards and references. I also use Miro and Notion when collaborating, all part of a clean, flexible documentation pipeline that evolves with the project."
         },
         {
           title: "Project Management",
           description:
-            "Agile ceremonies, Jira/Trello pipelines and milestone planning for multi-disciplinary teams."
+            "Strong experience with Agile workflows: refinement, grooming, sprint planning, standups, reviews, retros and all the painful-but-necessary ceremonies. Comfortable managing tasks through Jira/Trello and keeping scopes clean for small indie teams."
         }
       ],
       locationTitle: "Location & Contact",
@@ -107,7 +107,7 @@ export const translations = {
       basedInValue: "Reggio Emilia, Italy",
       basedInNote: "Available for remote work and onsite workshops across Europe.",
       contactTitle: "Contact",
-      contactNote: "Ping me for mentorship, lectures or bespoke prototype work."
+      contactNote: "Ping me for mentorship, lectures, bespoke prototype work or frontend collaborations."
     },
     projects: {
       kicker: "Selected work",
@@ -124,7 +124,7 @@ export const translations = {
       kicker: "Contact",
       title: "Let's build something memorable",
       description:
-        "Share your concept, an upcoming jam or the outline for a workshop. I can support documentation sprints, level design and audio direction.",
+        "Share your concept, an upcoming jam or the outline for a workshop. I can support documentation sprints, level design, audio direction and small frontend tools that support your game or event.",
       highlights: [
         {
           title: "Response time",
@@ -132,7 +132,7 @@ export const translations = {
         },
         {
           title: "Looking for",
-          description: "Indie prototypes, academic workshops, mentorship"
+          description: "Indie prototypes, academic workshops, mentorship, dev tools"
         },
         {
           title: "Languages",
@@ -175,7 +175,7 @@ export const translations = {
       navTitle: "Navigate",
       socialTitle: "Social",
       rights: "All rights reserved.",
-      origin: "Based in Reggio Emilia · Unreal & Unity certified"
+      origin: "Based in Reggio Emilia · Unreal & Unity focused"
     },
     timelineCTA: {
       kicker: "Mini game",
@@ -193,7 +193,7 @@ export const translations = {
       detailsTitle: "Project Details",
       responsibilitiesTitle: "Responsibilities",
       playableTitle: "Playable demo",
-      playableDescription: "Try the web build published on Unity Play.",
+      playableDescription: "If available, you can try a web build or downloadable demo.",
       playableCta: "Play demo",
       ctaKicker: "Need a post-mortem?",
       ctaTitle: "Available for talks, lectures and new collaborations.",
@@ -222,7 +222,7 @@ export const translations = {
     nav: {
       brandFirst: "Andrea",
       brandLast: "Reverberi",
-      brandTagline: "Game Designer",
+      brandTagline: "Game Designer & Frontend Developer",
       primaryLinks: [
         { id: "home", label: "Home" },
         { id: "about", label: "Chi sono" },
@@ -238,28 +238,28 @@ export const translations = {
     hero: {
       badge: "Disponibile per freelance e trasferte",
       name: "Andrea Reverberi",
-      role: "Game Designer",
+      role: "Game Designer & Frontend Developer",
       description:
-        "Game designer italiano che costruisce esperienze emozionali con meccaniche inventive e ritmi narrativi forti. Unisco prototipazione Unreal & Unity, sistemi UX e direzione audio per vertical slice rifiniti.",
+        "Game designer e frontend developer italiano che costruisce esperienze interattive, dalle web app agli horror game. Lavoro con React, TypeScript, Next.js e Unreal Engine 5/Unity, usando tool di AI per prototipare veloce e rifinire vertical slice.",
       ctas: {
         primary: "Guarda i progetti",
         secondary: "Gioca a Techdle"
       },
       stats: [
-        { label: "Prototipi giocabili", value: "12+" },
-        { label: "Game jam & festival", value: "8" },
+        { label: "Indie studio", value: "Unseen Cat" },
+        { label: "Progetto attuale", value: "Bedtime Nightmare" },
         { label: "Motori", value: "Unreal · Unity" }
       ],
       highlights: [
         {
           title: "Design sistemico",
           description:
-            "Bilanciamento economie, pacing e onboarding su misura per ogni piattaforma."
+            "Core loop, pacing e onboarding pensati sia per esperienze horror che casual."
         },
         {
           title: "Narrativa & Documentazione",
           description:
-            "GDD completi, beat chart e feature brief che mantengono allineata la collaborazione cross-team."
+            "GDD completi, beat chart e feature brief che mantengono allineata la collaborazione tra discipline."
         }
       ],
       focus: {
@@ -275,48 +275,48 @@ export const translations = {
       kicker: "Chi sono",
       title: "Design, documenta, itera.",
       description:
-        "Partito come narrative designer, oggi accompagno team indie e corporate dalla visione al vertical slice. Playtest, tuning della difficoltà e documentazione viva tengono i team allineati e produttivi.",
+        "Di giorno sono un frontend developer che lavora su prodotti digitali per Paramount, fuori orario progetto videogiochi. Dopo un master in Game Design alla Digital Bros Game Academy ho co-fondato Unseen Cat Studio insieme a Diego, dove mi sto specializzando in system design e giochi horror come Bedtime Nightmare. Continuo a sperimentare con prototipi, a studiare come i giocatori interagiscono con i sistemi e il mio obiettivo a lungo termine è lavorare su un videogioco multiplayer.",
       metrics: [
-        { value: "4+", label: "anni tra GDD e prototipi" },
-        { value: "8", label: "game jam & festival" },
-        { value: "15+", label: "playtest moderati" },
-        { value: "6", label: "team multipiattaforma" }
+        { value: "Diversi", label: "prototipi giocabili e progetti accademici" },
+        { value: "Alcuni", label: "giochi pubblicati su Itch.io, Steam e Unity Play" },
+        { value: "In corso", label: "sviluppo di Bedtime Nightmare" },
+        { value: "Ogni giorno", label: "lavoro frontend con React e TypeScript" }
       ],
       processTitle: "Processo",
       process: [
         {
-          title: "Discovery & Vision",
-          description: "Allineamento sul fantasy, analisi competitor e KPI di retention."
+          title: "Concept & Direzione",
+          description: "Raccolgo idee, referenze e sensazioni di mood. Definisco cosa deve far provare il gioco e quali sistemi servono davvero. Molta sperimentazione veloce, zero teoria inutile."
         },
         {
-          title: "Documentazione",
-          description: "GDD modulari, beat chart narrative, sistemi economici e difficulty curve."
+          title: "Prototipazione & Documentazione viva",
+          description: "Creo prototipi rapidi in Unreal/Unity e documento solo ciò che serve: sistemi, UX, flow, note per collaboratori. Aggiorno la documentazione mentre il gioco evolve, non prima."
         },
         {
-          title: "Playtest & Iteration",
-          description: "Sessioni moderate, survey e roadmap di miglioramento prioritizzate."
+          title: "Playtest rapido & Iterazioni",
+          description: "Provo la build io, amici, chi capita. Osservo cosa funziona e cosa no e itero subito. Poche perdite di tempo, solo miglioramenti concreti e veloci ai sistemi."
         }
       ],
       skills: [
         {
           title: "Game Engines",
           description:
-            "Prototipi rapidi in Unreal Engine 5 (Blueprint) e Unity (C#), con Ren'Py/Ink per dialoghi ramificati e strumenti narrativi."
+            "Prototipo velocemente in Unreal Engine 5 (Blueprint) e Unity (C#), concentrandomi su gameplay feel, sistemi e level flow più che sulla programmazione pura. Ogni tanto smanetto anche in Roblox Studio quando esploro idee multiplayer. Il mio metodo è: costruire → testare → iterare, tenendo tutto giocabile il prima possibile."
         },
         {
           title: "Sviluppo",
           description:
-            "Collego gameplay e UX con scripting, shader e tool. A mio agio con sistemi di gioco, logiche UI e telemetria."
+            "So programmare e scrivere logiche quando servono, ma nello sviluppo di giochi mi concentro soprattutto su system design, level design, UX flow e struttura narrativa più che sul codice pesante. Grazie alla mia esperienza da programmatore (React, TypeScript, Next.js) capisco bene cosa serve ai programmatori e comunico in modo chiaro senza finire sommerso di ingegneria."
         },
         {
           title: "Design Tools",
           description:
-            "Figma, Miro e Notion alimentano la pipeline di documentazione: da beat chart a UX annotate."
+            "Figma è la mia base operativa per UI/UX, flowchart e schemi di sistema. Milanote per moodboard e referenze. Uso anche Miro e Notion quando collaboro, una pipeline di documentazione leggera, chiara e che cresce insieme al progetto."
         },
         {
           title: "Project Management",
           description:
-            "Cerimonie Agile, pipeline Jira/Trello e pianificazione milestone per team multidisciplinari."
+            "Esperienza solida in workflow Agile: refinement, grooming, sprint planning, standup, review, retro e tutta la trafila di cerimonie che nessuno ama ma servono parecchio. A mio agio con Jira/Trello e nel mantenere chiari scope e priorità nei team indie."
         }
       ],
       locationTitle: "Dove lavoro & contatti",
@@ -324,7 +324,7 @@ export const translations = {
       basedInValue: "Reggio Emilia, Italia",
       basedInNote: "Disponibile per collaborazioni remote e workshop onsite in Europa.",
       contactTitle: "Contatti",
-      contactNote: "Scrivimi per mentorship, docenze o prototipi su misura."
+      contactNote: "Scrivimi per mentorship, docenze, prototipi su misura o collaborazioni frontend."
     },
     projects: {
       kicker: "Selezione lavori",
@@ -341,7 +341,7 @@ export const translations = {
       kicker: "Contatti",
       title: "Costruiamo qualcosa di memorabile",
       description:
-        "Raccontami il tuo concept, una jam imminente o il programma di un workshop. Posso supportarti in documentation sprint, level design e direzione audio.",
+        "Raccontami il tuo concept, una jam imminente o il programma di un workshop. Posso supportarti in documentation sprint, level design, direzione audio e piccoli tool frontend a supporto del progetto.",
       highlights: [
         {
           title: "Tempo di risposta",
@@ -349,7 +349,7 @@ export const translations = {
         },
         {
           title: "Cosa cerco",
-          description: "Prototipi indie, workshop accademici, mentorship"
+          description: "Prototipi indie, workshop accademici, mentorship, tool di supporto"
         },
         {
           title: "Lingue",
@@ -392,7 +392,7 @@ export const translations = {
       navTitle: "Naviga",
       socialTitle: "Social",
       rights: "Tutti i diritti riservati.",
-      origin: "Made in Reggio Emilia · Certificato Unreal & Unity"
+      origin: "Made in Reggio Emilia · Focus su Unreal & Unity"
     },
     timelineCTA: {
       kicker: "Mini game",
@@ -410,7 +410,7 @@ export const translations = {
       detailsTitle: "Dettagli progetto",
       responsibilitiesTitle: "Responsabilità",
       playableTitle: "Demo giocabile",
-      playableDescription: "Prova la versione web pubblicata su Unity Play.",
+      playableDescription: "Quando disponibile, puoi provare una web build o una demo scaricabile.",
       playableCta: "Gioca ora",
       ctaKicker: "Serve un post-mortem?",
       ctaTitle: "Disponibile per talk, docenze e nuove collaborazioni.",

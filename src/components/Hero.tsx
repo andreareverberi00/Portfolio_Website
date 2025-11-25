@@ -135,12 +135,12 @@ export default function Hero() {
           variants={containerVariants}
           className="mt-32 grid gap-4 sm:grid-cols-3 max-w-4xl mx-auto"
         >
-          {hero.stats.map((stat) => (
+          {hero.stats.map((stat, index) => (
             <motion.div
-              key={stat.label}
+              key={index}
               variants={itemVariants}
               whileHover={{ y: -5 }}
-              className="rounded-2xl border border-white/5 bg-white/5 p-6 text-center backdrop-blur-sm hover:bg-white/10 transition-colors"
+              className="rounded-2xl border border-white/5 bg-white/5 p-6 text-center backdrop-blur-sm hover:bg-white/10 transition-colors flex flex-col justify-center items-center"
             >
               <p className="text-4xl font-bold text-white mb-2">{stat.value}</p>
               <p className="text-xs uppercase tracking-[0.2em] text-gray-400">
@@ -154,9 +154,9 @@ export default function Hero() {
           variants={containerVariants}
           className="mt-24 grid gap-6 md:grid-cols-2 max-w-4xl mx-auto pb-32"
         >
-          {hero.highlights.map((highlight) => (
+          {hero.highlights.map((highlight, index) => (
             <motion.div
-              key={highlight.title}
+              key={index}
               variants={itemVariants}
               className="group rounded-2xl border border-white/5 bg-gradient-to-br from-white/5 to-transparent p-6 text-left backdrop-blur-sm hover:border-violet-500/30 transition-colors"
             >

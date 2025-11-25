@@ -1,4 +1,4 @@
-import React from "react";
+
 import { motion } from "framer-motion";
 import {
   Code2,
@@ -9,7 +9,8 @@ import {
   Linkedin,
   Compass,
   PenSquare,
-  Users
+  Users,
+  Globe
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
@@ -71,7 +72,7 @@ export default function About() {
             {about.process.map((step, index) => {
               const Icon = processIcons[index] ?? Compass;
               return (
-                <div key={step.title} className="flex gap-4 py-3 border-b border-white/5 last:border-none">
+                <div key={index} className="flex gap-4 py-3 border-b border-white/5 last:border-none">
                   <div className="rounded-full bg-white/10 p-3 h-fit">
                     <Icon className="w-6 h-6 text-violet-300" />
                   </div>
@@ -89,22 +90,22 @@ export default function About() {
           {about.skills.map((skill, index) => {
             const Icon = skillIcons[index] ?? Gamepad2;
             return (
-            <motion.div
-              key={skill.title}
-              variants={itemVariants}
-              whileHover={{
-                scale: 1.02,
-                transition: { type: "spring", stiffness: 300 }
-              }}
-              className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-lg hover:bg-gray-700/50 transition-colors border border-violet-900/50"
-            >
-              <div className="mb-4">
-                <Icon className="w-8 h-8 text-violet-400" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">{skill.title}</h3>
-              <p className="text-gray-400">{skill.description}</p>
-            </motion.div>
-          );
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                whileHover={{
+                  scale: 1.02,
+                  transition: { type: "spring", stiffness: 300 }
+                }}
+                className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-lg hover:bg-gray-700/50 transition-colors border border-violet-900/50"
+              >
+                <div className="mb-4">
+                  <Icon className="w-8 h-8 text-violet-400" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{skill.title}</h3>
+                <p className="text-gray-400">{skill.description}</p>
+              </motion.div>
+            );
           })}
         </div>
 
@@ -138,6 +139,15 @@ export default function About() {
               >
                 <Linkedin className="w-5 h-5" />
                 LinkedIn
+              </a>
+              <a
+                href="https://www.f6s.com/andrea-reverberi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 flex items-center gap-2 mt-2 hover:text-violet-400 transition-colors"
+              >
+                <Globe className="w-5 h-5" />
+                F6S
               </a>
               <p className="text-gray-400 mt-2">{about.contactNote}</p>
             </div>
