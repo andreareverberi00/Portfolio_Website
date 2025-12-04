@@ -19,9 +19,10 @@ export default function ProjectGallery({ projectName }: ProjectGalleryProps) {
   const projectImages = Object.entries(images)
     .filter(([path]) => path.includes(`/Assets/${projectName}/`))
     .map(([path, imageUrl]) => {
+      const fileName = path.split('/').pop()?.split('.')[0] || '';
       return {
         src: imageUrl as string,
-        alt: path.split('/').pop()?.split('.')[0] || '',
+        alt: fileName.replace(/[-_]/g, ' '),
       };
     });
 
