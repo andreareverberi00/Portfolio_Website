@@ -2,7 +2,7 @@
 title: "Space Pizza"
 date: "2025-02-20"
 description: "A pixel art game set in a cyberpunk universe where players take on the role of an astronaut working at a space diner, delivering pizzas to unique alien customers."
-image: "/Assets/SpacePizza/space-pizza-cover.png"
+image: "/Assets/space-pizza.png"
 demoUrl: "https://diegogu.itch.io/space-pizza"
 tags: ["Unity", "C#", "Pixel Art", "Game Design"]
 details:
@@ -56,4 +56,3 @@ Players manage two categories of ingredients:
 ## Playable on
 
 [Play Space Pizza on itch.io](https://diegogu.itch.io/space-pizza)
-

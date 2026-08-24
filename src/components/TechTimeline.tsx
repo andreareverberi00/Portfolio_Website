@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, ArrowUp, ArrowDown, RefreshCcw, Trophy } from 'lucide-react';
+import { Clock, RefreshCcw, Trophy } from 'lucide-react';
 
 interface TechEvent {
     id: number;

@@ -19,12 +19,48 @@
     overflow-x: hidden;
   }
 
+  :focus-visible {
+    @apply outline-none ring-2 ring-cyan-300 ring-offset-4 ring-offset-slate-950;
+  }
+
   section {
     scroll-margin-top: 100px;
   }
   
   h1, h2, h3, h4, h5, h6 {
     @apply tracking-tight;
+  }
+}
+
+.skip-link {
+  @apply fixed left-4 top-4 z-[100] -translate-y-24 rounded-full bg-white px-5 py-3 font-bold text-slate-950 transition-transform focus:translate-y-0;
+}
+
+.steam-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 80% 20%, rgb(34 211 238 / 0.12), transparent 34%);
+}
+
+.steam-button {
+  background: linear-gradient(135deg, #67e8f9, #a5f3fc);
+  box-shadow: 0 12px 40px rgb(34 211 238 / 0.2);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.steam-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 48px rgb(34 211 238 / 0.32);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

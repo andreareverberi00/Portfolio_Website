@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, PlayCircle, Sparkles } from "lucide-react";
+import { ArrowLeft, Download, PlayCircle, Sparkles } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProjectBySlug } from "./utils/markdownLoader";
 import ReactMarkdown from "react-markdown";
@@ -12,8 +13,27 @@ export default function ProjectDetails() {
   const navigate = useNavigate();
   const project = getProjectBySlug(projectId || "");
   const scrollToContact = useSectionNavigation();
-  const { copy } = useLanguage();
+  const { copy, language } = useLanguage();
   const { projectDetails, projects: projectsCopy } = copy;
+
+  useEffect(() => {
+    if (!project) return;
+    const previousTitle = document.title;
+    const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    const previousDescription = description?.content;
+    const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    const previousCanonical = canonical?.href;
+
+    document.title = `${project.title} | Andrea Reverberi — Game Designer`;
+    if (description) description.content = project.description;
+    if (canonical) canonical.href = `https://www.andreareverberi.com/project/${project.slug}`;
+
+    return () => {
+      document.title = previousTitle;
+      if (description && previousDescription) description.content = previousDescription;
+      if (canonical && previousCanonical) canonical.href = previousCanonical;
+    };
+  }, [project]);
 
   if (!project) {
     return (
@@ -122,9 +142,15 @@ export default function ProjectDetails() {
             </div>
 
             {project.demoUrl && (
-              <div className="rounded-3xl border border-violet-500/40 bg-violet-500/10 p-6">
-                <h3 className="text-xl font-semibold text-white mb-3">{projectDetails.playableTitle}</h3>
-                <p className="text-gray-300 mb-4">{projectDetails.playableDescription}</p>
+              <div className={`rounded-3xl border p-6 ${project.steamAppId ? "border-cyan-300/30 bg-cyan-300/[0.07]" : "border-violet-500/40 bg-violet-500/10"}`}>
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  {project.steamAppId ? (language === "it" ? "Disponibile su Steam" : "Available on Steam") : projectDetails.playableTitle}
+                </h3>
+                <p className="text-gray-300 mb-4">
+                  {project.steamAppId
+                    ? (language === "it" ? "Scarica il gioco completo o prova la demo dalla pagina ufficiale." : "Download the full game or try the demo from the official store page.")
+                    : projectDetails.playableDescription}
+                </p>
                 <motion.a
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -133,8 +159,8 @@ export default function ProjectDetails() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-slate-900"
                 >
-                  <PlayCircle size={18} />
-                  {projectDetails.playableCta}
+                  {project.steamAppId ? <Download size={18} /> : <PlayCircle size={18} />}
+                  {project.steamAppId ? "Download on Steam" : projectDetails.playableCta}
                 </motion.a>
               </div>
             )}
@@ -160,6 +186,32 @@ export default function ProjectDetails() {
             {projectDetails.ctaButton}
           </motion.button>
         </div>
+
+        {project.steamAppId && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="overflow-hidden rounded-3xl border border-cyan-300/20 bg-slate-900/70 p-3 shadow-2xl shadow-cyan-950/20 sm:p-5"
+            aria-labelledby="steam-widget-title"
+          >
+            <div className="mb-4 flex items-center justify-between gap-4 px-2">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-300">Steam</p>
+                <h2 id="steam-widget-title" className="mt-1 text-2xl font-bold text-white">
+                  {language === "it" ? "Scarica Bedtime Nightmare" : "Download Bedtime Nightmare"}
+                </h2>
+              </div>
+              <Sparkles className="text-cyan-300" aria-hidden="true" />
+            </div>
+            <iframe
+              title="Bedtime Nightmare on Steam"
+              src={`https://store.steampowered.com/widget/${project.steamAppId}/`}
+              className="h-[190px] w-full rounded-2xl border-0 sm:h-[210px]"
+              loading="lazy"
+            />
+          </motion.section>
+        )}
 
         <ProjectGallery projectName={project.title.replace(/\s+/g, "")} />
       </div>
