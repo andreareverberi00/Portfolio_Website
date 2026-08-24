@@ -7,30 +7,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Primary Meta Tags -->
-  <title>Andrea Reverberi | Game Designer & Developer Portfolio</title>
-  <meta name="title" content="Andrea Reverberi | Game Designer & Developer Portfolio" />
+  <title>Andrea Reverberi | Game Designer — Bedtime Nightmare on Steam</title>
+  <meta name="title" content="Andrea Reverberi | Game Designer — Bedtime Nightmare on Steam" />
   <meta name="description"
-    content="Portfolio of Andrea Reverberi, a passionate Game Designer and Developer based in Italy. Specializing in Unreal Engine, Unity, and immersive gameplay mechanics. View projects, skills, and contact info." />
+    content="Game design portfolio of Andrea Reverberi, co-founder of Unseen Cat Studio and game designer of Bedtime Nightmare, released on Steam. Systems, level design, horror and Unreal Engine 5." />
   <meta name="keywords"
-    content="Andrea Reverberi, Game Designer, Game Developer, Level Designer, Unity Developer, Unreal Engine Developer, Portfolio, Game Design Italy, Gameplay Programmer, C#, C++, Reggio Emilia" />
+    content="Andrea Reverberi, Bedtime Nightmare, Unseen Cat Studio, Steam game, Game Designer, Level Designer, Unreal Engine 5, horror game, systems design, game design portfolio, Italy" />
   <meta name="author" content="Andrea Reverberi" />
   <link rel="canonical" href="https://www.andreareverberi.com/" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.andreareverberi.com/" />
-  <meta property="og:title" content="Andrea Reverberi | Game Designer & Developer Portfolio" />
+  <meta property="og:title" content="Andrea Reverberi — I shipped Bedtime Nightmare on Steam" />
   <meta property="og:description"
-    content="Portfolio of Andrea Reverberi, a passionate Game Designer and Developer based in Italy. Specializing in Unreal Engine, Unity, and immersive gameplay mechanics." />
-  <meta property="og:image" content="https://www.andreareverberi.com/Assets/SiteImage.png" />
+    content="Game designer and co-founder of Unseen Cat Studio. Explore the systems, levels and horror design behind Bedtime Nightmare and my other playable projects." />
+  <meta property="og:image" content="https://www.unseencatstudio.com/media/BedtimeNightmare/A_BN_Cameretta.png" />
+  <meta property="og:image:alt" content="Bedtime Nightmare child bedroom at night" />
+  <meta property="og:site_name" content="Andrea Reverberi Portfolio" />
+  <meta property="og:locale" content="en_GB" />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content="https://www.andreareverberi.com/" />
-  <meta property="twitter:title" content="Andrea Reverberi | Game Designer & Developer Portfolio" />
+  <meta property="twitter:title" content="Andrea Reverberi — Bedtime Nightmare on Steam" />
   <meta property="twitter:description"
-    content="Portfolio of Andrea Reverberi, a passionate Game Designer and Developer based in Italy. Specializing in Unreal Engine, Unity, and immersive gameplay mechanics." />
-  <meta property="twitter:image" content="https://www.andreareverberi.com/Assets/SiteImage.png" />
+    content="Game designer and co-founder of Unseen Cat Studio. See how Bedtime Nightmare went from concept to a commercial Steam release." />
+  <meta property="twitter:image" content="https://www.unseencatstudio.com/media/BedtimeNightmare/A_BN_Cameretta.png" />
 
   <meta name="theme-color" content="#4c0894" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -41,21 +44,42 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Andrea Reverberi",
-      "url": "https://www.andreareverberi.com",
-      "image": "https://www.andreareverberi.com/Assets/SiteImage.png",
-      "sameAs": [
-        "https://www.linkedin.com/in/andrea-reverberi/",
-        "https://github.com/AndreaReverberi",
-        "https://www.f6s.com/member/andrea-reverberi"
-      ],
-      "jobTitle": "Game Designer",
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Freelance"
-      },
-      "description": "Game Designer and Developer specializing in Unreal Engine and Unity."
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://www.andreareverberi.com/#andrea",
+          "name": "Andrea Reverberi",
+          "url": "https://www.andreareverberi.com/",
+          "image": "https://www.andreareverberi.com/Assets/SiteImage.png",
+          "sameAs": [
+            "https://www.linkedin.com/in/andrea-reverberi/",
+            "https://github.com/andreareverberi00"
+          ],
+          "jobTitle": ["Game Designer", "Frontend Developer"],
+          "memberOf": {
+            "@type": "Organization",
+            "name": "Unseen Cat Studio",
+            "url": "https://www.unseencatstudio.com/"
+          },
+          "knowsAbout": ["Game Design", "Systems Design", "Level Design", "Unreal Engine 5", "Unity", "Horror Games"]
+        },
+        {
+          "@type": "VideoGame",
+          "name": "Bedtime Nightmare",
+          "url": "https://store.steampowered.com/app/3979840/Bedtime_Nightmare/",
+          "image": "https://www.unseencatstudio.com/media/BedtimeNightmare/A_BN_Cameretta.png",
+          "datePublished": "2026-06-23",
+          "gamePlatform": "PC",
+          "applicationCategory": "Game",
+          "genre": ["Psychological Horror", "Survival Horror", "Adventure"],
+          "inLanguage": ["en", "it"],
+          "author": { "@id": "https://www.andreareverberi.com/#andrea" },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Unseen Cat Studio"
+          }
+        }
+      ]
     }
   </script>
 </head>

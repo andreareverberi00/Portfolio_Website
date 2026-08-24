@@ -1,33 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { AnimatePresence } from "framer-motion";
-import LoadingScreen from "./components/LoadingScreen";
+import { lazy, Suspense, useEffect } from "react";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import Navigation from "./components/Navigation";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ProjectDetails from "./components/ProjectDetails";
 import emailjs from "@emailjs/browser";
-import TechTimeline from "./components/TechTimeline";
-import AllProjects from "./components/AllProjects";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import TimelineCTA from "./components/TimelineCTA";
+import SteamSpotlight from "./components/SteamSpotlight";
 import { LanguageProvider } from "./context/LanguageContext";
 
+const ProjectDetails = lazy(() => import("./components/ProjectDetails"));
+const TechTimeline = lazy(() => import("./components/TechTimeline"));
+const AllProjects = lazy(() => import("./components/AllProjects"));
+
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate loading time
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   useEffect(() => {
     emailjs.init(import.meta.env.VITE_PUBLIC_EMAILJS_PUBLIC_KEY);
   }, []);
@@ -36,29 +25,26 @@ function App() {
     <LanguageProvider>
       <Router>
         <ScrollToTop />
-        <AnimatePresence mode="wait">
-          {isLoading ? (
-            <LoadingScreen key="loading" />
-          ) : (
             <div className="relative min-h-screen bg-slate-950 text-white overflow-hidden">
+              <a href="#main-content" className="skip-link">Skip to content</a>
               <div className="pointer-events-none absolute inset-0">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#4c1d95,transparent_55%)] opacity-70" />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,#0f172a,transparent_65%)] opacity-80" />
                 <div className="absolute inset-0 bg-noise opacity-20" />
               </div>
               <Navigation />
-              <main className="relative z-10 pt-32 pb-16">
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/project/:projectId" element={<ProjectDetails />} />
-                  <Route path="/techtimeline" element={<TechTimeline />} />
-                  <Route path="/projects" element={<AllProjects />} />
-                </Routes>
+              <main id="main-content" className="relative z-10 pt-32 pb-16">
+                <Suspense fallback={<div className="min-h-[60vh]" aria-label="Loading page" />}>
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/project/:projectId" element={<ProjectDetails />} />
+                    <Route path="/techtimeline" element={<TechTimeline />} />
+                    <Route path="/projects" element={<AllProjects />} />
+                  </Routes>
+                </Suspense>
               </main>
               <Footer />
             </div>
-          )}
-        </AnimatePresence>
       </Router>
     </LanguageProvider>
   );
@@ -83,6 +69,7 @@ function HomePage() {
       <section id="home">
         <Hero />
       </section>
+      <SteamSpotlight />
       <section id="about">
         <About />
       </section>

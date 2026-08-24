@@ -62,11 +62,12 @@ export default function Projects() {
               <img
                 src={project.image}
                 alt={project.title}
+                loading={index === 0 ? "eager" : "lazy"}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
               <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-black/50 backdrop-blur-md px-4 py-1.5 text-xs font-medium text-white border border-white/10">
-                {formatDate(project.date)}
+                {project.steamAppId ? "Released on Steam" : formatDate(project.date)}
               </div>
             </div>
 

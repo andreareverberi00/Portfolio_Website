@@ -40,17 +40,17 @@ export default function ProjectGallery({ projectName }: ProjectGalleryProps) {
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (selectedImageIndex === null) return;
-    if (e.key === 'ArrowRight') setSelectedImageIndex((prev) => (prev! + 1) % projectImages.length);
-    if (e.key === 'ArrowLeft') setSelectedImageIndex((prev) => (prev! - 1 + projectImages.length) % projectImages.length);
-    if (e.key === 'Escape') setSelectedImageIndex(null);
-  };
-
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedImageIndex === null) return;
+      if (e.key === 'ArrowRight') setSelectedImageIndex((prev) => (prev! + 1) % projectImages.length);
+      if (e.key === 'ArrowLeft') setSelectedImageIndex((prev) => (prev! - 1 + projectImages.length) % projectImages.length);
+      if (e.key === 'Escape') setSelectedImageIndex(null);
+    };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedImageIndex]);
+  }, [projectImages.length, selectedImageIndex]);
 
   if (projectImages.length === 0) return null;
 

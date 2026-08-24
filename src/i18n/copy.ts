@@ -19,18 +19,18 @@ export const translations = {
       cta: "Let's talk"
     },
     hero: {
-      badge: "Available for freelance & relocation",
+      badge: "I shipped a game on Steam · Available for new projects",
       name: "Andrea Reverberi",
       role: "Game Designer & Frontend Developer",
       description:
-        "Italian game designer and frontend developer building interactive experiences from web apps to horror games. I work with React, TypeScript, Next.js and Unreal Engine 5/Unity, using AI tools to prototype fast and craft small polished vertical slices.",
+        "Game designer, frontend developer and co-founder of Unseen Cat Studio. I helped take Bedtime Nightmare from concept to a commercial Steam release, designing systems, levels, pacing and the player experience in Unreal Engine 5.",
       ctas: {
         primary: "View my work",
-        secondary: "Play Techdle"
+        secondary: "Download on Steam"
       },
       stats: [
         { label: "Indie studio", value: "Unseen Cat" },
-        { label: "Current project", value: "Bedtime Nightmare" },
+        { label: "Shipped on Steam", value: "Bedtime Nightmare" },
         { label: "Engines", value: "Unreal · Unity" }
       ],
       highlights: [
@@ -46,8 +46,8 @@ export const translations = {
         }
       ],
       focus: {
-        label: "Focus 2025",
-        value: "Vertical slices · Narrative horror"
+        label: "Latest release",
+        value: "Bedtime Nightmare · Steam"
       },
       location: {
         label: "Based in",
@@ -62,7 +62,7 @@ export const translations = {
       metrics: [
         { value: "Multiple", label: "playable prototypes and academy projects" },
         { value: "Several", label: "published games on Itch.io, Steam and Unity Play" },
-        { value: "Ongoing", label: "development of Bedtime Nightmare" },
+        { value: "Steam", label: "commercial release: Bedtime Nightmare" },
         { value: "Daily", label: "frontend work with React & TypeScript" }
       ],
       processTitle: "Process",
@@ -236,18 +236,18 @@ export const translations = {
       cta: "Parliamone"
     },
     hero: {
-      badge: "Disponibile per freelance e trasferte",
+      badge: "Ho pubblicato un gioco su Steam · Disponibile per nuovi progetti",
       name: "Andrea Reverberi",
       role: "Game Designer & Frontend Developer",
       description:
-        "Game designer e frontend developer italiano che costruisce esperienze interattive, dalle web app agli horror game. Lavoro con React, TypeScript, Next.js e Unreal Engine 5/Unity, usando tool di AI per prototipare veloce e rifinire vertical slice.",
+        "Game designer, frontend developer e co-fondatore di Unseen Cat Studio. Ho contribuito a portare Bedtime Nightmare dal concept a una release commerciale su Steam, curando sistemi, livelli, pacing e player experience in Unreal Engine 5.",
       ctas: {
         primary: "Guarda i progetti",
-        secondary: "Gioca a Techdle"
+        secondary: "Scarica su Steam"
       },
       stats: [
         { label: "Indie studio", value: "Unseen Cat" },
-        { label: "Progetto attuale", value: "Bedtime Nightmare" },
+        { label: "Pubblicato su Steam", value: "Bedtime Nightmare" },
         { label: "Motori", value: "Unreal · Unity" }
       ],
       highlights: [
@@ -263,8 +263,8 @@ export const translations = {
         }
       ],
       focus: {
-        label: "Focus 2025",
-        value: "Vertical slice · Horror narrativo"
+        label: "Ultima release",
+        value: "Bedtime Nightmare · Steam"
       },
       location: {
         label: "Base operativa",
@@ -279,7 +279,7 @@ export const translations = {
       metrics: [
         { value: "Diversi", label: "prototipi giocabili e progetti accademici" },
         { value: "Alcuni", label: "giochi pubblicati su Itch.io, Steam e Unity Play" },
-        { value: "In corso", label: "sviluppo di Bedtime Nightmare" },
+        { value: "Steam", label: "release commerciale: Bedtime Nightmare" },
         { value: "Ogni giorno", label: "lavoro frontend con React e TypeScript" }
       ],
       processTitle: "Processo",
@@ -437,4 +437,4 @@ export const translations = {
   }
 } as const;
 
-export type Copy = typeof translations.en;
+export type Copy = (typeof translations)[Language];

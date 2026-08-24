@@ -7,6 +7,7 @@ export interface MarkdownProject {
   description: string;
   image: string;
   demoUrl?: string;
+  steamAppId?: string;
   tags: string[];
   details: {
     engine: string;
@@ -19,7 +20,8 @@ export interface MarkdownProject {
 
 export function getProjects(): MarkdownProject[] {
   const projectFiles = import.meta.glob('../../content/projects/*.md', {
-    as: 'raw',
+    query: '?raw',
+    import: 'default',
     eager: true
   });
 
@@ -40,6 +42,7 @@ export function getProjects(): MarkdownProject[] {
       description: data.description || '',
       image: data.image || '',
       demoUrl: data.demoUrl,
+      steamAppId: data.steamAppId ? String(data.steamAppId) : undefined,
       tags: data.tags || [],
       details: {
         engine: data.details?.engine || '',

@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
-import { Gamepad2, ChevronDown, MapPin, Sparkles, Timer } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ArrowUpRight, Download, Gamepad2, ChevronDown, MapPin, Sparkles, Timer } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 export default function Hero() {
@@ -119,15 +118,18 @@ export default function Hero() {
             >
               {hero.ctas.primary}
             </motion.button>
-            <Link to="/techtimeline" className="contents">
-              <motion.button
+            <motion.a
+                href="https://store.steampowered.com/app/3979840/Bedtime_Nightmare/"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 rounded-full border border-white/10 bg-white/5 text-white font-semibold hover:bg-white/10 transition-colors backdrop-blur-sm"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border border-cyan-300/30 bg-cyan-300/10 text-cyan-100 font-semibold hover:bg-cyan-300/20 transition-colors backdrop-blur-sm"
               >
+                <Download size={19} />
                 {hero.ctas.secondary}
-              </motion.button>
-            </Link>
+                <ArrowUpRight size={17} />
+              </motion.a>
           </motion.div>
         </motion.div>
 

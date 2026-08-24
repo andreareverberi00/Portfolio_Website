@@ -2,8 +2,9 @@
 title: "Bedtime Nightmare"
 date: "2026-06-23"
 description: "A first-person psychological horror game where light is your only protection: complete nightly tasks, keep the generator alive, and survive what moves in the dark."
-image: "/Assets/BedtimeNightmare/monster-on-shelf.webp"
+image: "https://www.unseencatstudio.com/media/BedtimeNightmare/A_BN_Cameretta.png"
 demoUrl: "https://store.steampowered.com/app/3979840/Bedtime_Nightmare/"
+steamAppId: "3979840"
 tags: ["Unreal Engine", "Horror", "Game Design", "Steam"]
 details:
   engine: "Unreal Engine 5"
