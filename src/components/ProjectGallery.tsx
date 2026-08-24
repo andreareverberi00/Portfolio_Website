@@ -10,7 +10,7 @@ export default function ProjectGallery({ projectName }: ProjectGalleryProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
   // Get all images from the project's assets folder
-  const images = import.meta.glob('/public/Assets/*/*.{png,jpg,jpeg,webp}', {
+  const images = import.meta.glob('/public/Assets/*/*.{png,jpg,jpeg,webp,gif}', {
     eager: true,
     query: '?url',
     import: 'default'
